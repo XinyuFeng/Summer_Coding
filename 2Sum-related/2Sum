@@ -1,0 +1,61 @@
+Java version:
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> T = new HashMap<Integer, Integer>();
+        int[] ans={0,0};
+        
+        for(int i=0; i<nums.length; i++){
+            int tmp=target-nums[i];
+            if(T.containsKey(tmp)){
+                ans[0]=(T.get(tmp)-1);
+                ans[1]=i;
+                return ans;
+            }
+            T.put(nums[i], i+1);
+        }
+        return ans;
+    }
+}
+
+Cpp version:
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+        vector<int>::iterator it, start=nums.begin(), it_rem;
+        map<int,int> m;
+        vector<int> result;
+          
+        for(it=nums.begin();it!=nums.end();it++){
+            int num=*it;
+            int rem=target-num;
+     
+            if(m[rem]==1){
+                it_rem=find(nums.begin(), nums.end(), rem);
+                result.push_back(it_rem - start);
+                result.push_back(it - start);
+                return result;
+            }
+            else{
+               m[num]=1;
+            }
+        }
+        
+    }
+};
+
+Python version:
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        T={}
+        for idx, num in enumerate(nums):
+            tmp = target-num
+            if tmp in T:
+                return [T[tmp]-1, idx]
+                
+            T[num]=idx+1
