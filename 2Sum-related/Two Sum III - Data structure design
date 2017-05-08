@@ -1,0 +1,91 @@
+Java version:
+public class TwoSum {
+
+    /** Initialize your data structure here. */
+    HashMap<Integer, Boolean>T = new HashMap<Integer, Boolean>();
+    public TwoSum() {
+        
+    }
+    
+    /** Add the number to an internal data structure.. */
+    public void add(int number) {
+        if(T.containsKey(number)) T.put(number, true);
+        else T.put(number, false);
+    }
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public boolean find(int value) {
+        Iterator it = T.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<Integer, Boolean> entry = (Map.Entry)it.next();
+            int key = entry.getKey();
+            int tmp = value - key;
+            if(tmp == key && entry.getValue()) return true;
+            if(tmp != key && T.containsKey(tmp)) return true;
+        }
+        return false;
+    }
+}
+
+C++ version:
+class TwoSum {
+public:
+    /** Initialize your data structure here. */
+    unordered_map<int, bool>T;
+    TwoSum() {
+        
+    }
+    
+    /** Add the number to an internal data structure.. */
+    void add(int number) {
+        if(T.find(number)!=T.end())
+            T[number]=true; //if duplicate
+        else
+            T[number]=false;
+        
+    }
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    bool find(int value) {
+        for(auto t : T){
+            int tmp = value-t.first;
+            if(tmp==t.first && t.second) return true;
+            if(tmp!=t.first && T.count(tmp)) return true;
+        }
+        
+        return false;
+    }
+};
+
+Python version:
+class TwoSum(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.T={}
+
+    def add(self, number):
+        """
+        Add the number to an internal data structure..
+        :type number: int
+        :rtype: void
+        """
+        if self.T.has_key(number):
+            self.T[number]=True
+        else:
+            self.T[number]=False
+        
+
+    def find(self, value):
+        """
+        Find if there exists any pair of numbers which sum is equal to the value.
+        :type value: int
+        :rtype: bool
+        """
+        for t in self.T:
+            tmp = value - t
+            if t == tmp and self.T[t] or t != tmp and self.T.has_key(tmp):
+                return True
+        return False
