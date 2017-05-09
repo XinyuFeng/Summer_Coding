@@ -1,0 +1,64 @@
+Java version:
+public class Solution {
+    public int subarraySum(int[] nums, int k) {
+        if(nums==null || nums.length==0) return 0;
+        Map<Integer, Integer> T = new HashMap<>();
+        int ans=0, acc=0;
+        T.put(0, 1);
+        for (int i=0; i<nums.length; ++i){
+            acc += nums[i];
+            if (T.containsKey(acc-k)){
+                ans += T.get(acc-k);
+            }
+            T.put(acc, T.getOrDefault(acc, 0)+1);
+        }
+        return ans;
+    }
+}
+
+C++ version: 29ms
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int len=nums.size(), acc=0, ans=0;
+        unordered_map<int, int> T;
+        T[0]=1;
+        for(int i=0; i<len; ++i){
+            acc+=nums[i];
+            if(T.count(acc-k))
+                ans+=T[acc-k];
+            T[acc]++;
+        }
+        
+        return ans;
+        
+    }
+};
+
+C++ version: 49ms
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int len=nums.size(), acc=0;
+        unordered_map<int, vector<int>> T;
+        for(int i=0; i<len; ++i){
+            acc+=nums[i];
+            T[acc].push_back(i);
+        }
+        
+        int ans = T.count(k)? T[k].size() : 0;
+        for(auto& p : T){
+            if(T.count(p.first-k)){
+                for(auto& t : p.second){
+                    for(auto& m : T[p.first-k]){
+                        if(m<t) ans++;
+                        else break;
+                }
+                }
+                
+            }
+        }
+        return ans;
+        
+    }
+};
