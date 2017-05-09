@@ -1,0 +1,91 @@
+C++ version 1:
+class Solution {
+public:
+    int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
+        unordered_map<int, int> T;
+        for(int i=0; i<A.size(); ++i){
+            for(int j=0; j<B.size(); ++j){
+                T[A[i]+B[j]]++;
+            }
+        }
+        
+        int s=0;
+        for(int i=0; i<C.size(); ++i){
+            for(int j=0; j<D.size(); ++j){
+                if(T.count(-C[i]-D[j])){
+                    s+=T[-C[i]-D[j]];
+                }
+            }
+        }
+        return s;
+    }
+};
+
+Java version 1:
+public class Solution {
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        Map<Integer, Integer> T = new HashMap<>();
+        
+        for(int i=0; i<A.length; ++i){
+            for(int j=0; j<B.length; ++j){
+                T.put(A[i]+B[j], T.getOrDefault(A[i]+B[j], 0)+1);
+            }
+        }
+        
+        int ans=0;
+        for(int i=0; i<C.length; ++i){
+            for(int j=0; j<D.length; ++j){
+                ans+=T.getOrDefault(-C[i]-D[j], 0);
+            }
+        }
+        return ans;
+    }
+}
+
+C++ version 2:
+class Solution {
+public:
+    int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
+        vector<int>AB(A.size()*B.size(), 0);//reduce to 2 sum
+        vector<int>CD(C.size()*D.size(), 0);
+        
+        int idx=0;
+        for(int i=0; i<A.size(); ++i){
+            for(int j=0; j<B.size(); ++j){
+                AB[idx]=A[i]+B[j];
+                idx++;
+            }
+        }
+        idx=0;
+        for(int i=0; i<C.size(); ++i){
+            for(int j=0; j<D.size(); ++j){
+                CD[idx]=C[i]+D[j];
+                idx++;
+            }
+        }
+        
+        sort(AB.begin(), AB.end());
+        sort(CD.begin(), CD.end());
+        //two sum
+        int N=A.size(), ans=0;
+        int left = 0, right = N*N-1;
+        while(left<N*N && right>=0){
+            int tmp = AB[left]+CD[right];
+            if(tmp==0){
+                left++;
+                right--;
+                int i=1, j=1;
+                while(left<N*N && AB[left]==AB[left-1]){
+                    left++; i++;
+                }
+                while(right>=0 && CD[right]==CD[right+1]){
+                    right--; j++;
+                }
+                ans+=i*j;
+            }
+            else if(tmp>0) right--;
+            else left++;
+        }
+        return ans;
+    }
+};
