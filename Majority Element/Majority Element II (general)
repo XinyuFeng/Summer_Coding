@@ -1,0 +1,64 @@
+C++ version:
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        unordered_map<int, int> T;
+        
+        for(auto n : nums){
+            T[n]++;
+            if(T.size()==3){
+                for(auto it=T.begin(); it!=T.end();){
+                    if(it->second==1){
+                        T.erase(it++);
+                    }
+                    else{
+                        it->second--;
+                        ++it;
+                    }
+                }
+            }
+        }
+        
+        vector<int> ans;
+        for(auto n : T){
+            if(count(nums.begin(), nums.end(), n.first)>nums.size()/3)
+                ans.push_back(n.first);
+        }
+        return ans;
+        
+    }
+};
+
+Java version:
+public class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        Map<Integer, Integer> T = new HashMap<>();
+        for(int n : nums){
+            T.put(n, T.getOrDefault(n, 0)+1);
+            if(T.size()==3){
+                for(int p : new HashSet<Integer>(T.keySet())){
+                    if(T.get(p)==1){
+                        T.remove(p);
+                    }
+                    else{
+                        T.put(p, T.get(p)-1);
+                    }
+                }
+            }
+        }
+        
+        for(int c : T.keySet()){
+            T.put(c, 0);
+        }
+        List<Integer> ans = new ArrayList<Integer>();
+        for(int n : nums){
+            if(T.containsKey(n) && T.get(n)<=nums.length/3){
+                T.put(n, T.get(n)+1);
+                if(T.get(n)>nums.length/3){
+                    ans.add(n);
+                }
+            }
+        }
+        return ans;
+    }
+}
