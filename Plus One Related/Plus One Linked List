@@ -1,0 +1,55 @@
+Java:
+public class Solution {
+    public ListNode plusOne(ListNode head) {
+        ListNode ans = new ListNode(0);
+        ans.next=head;
+        ListNode p=ans;
+        ListNode cur=head;
+        
+        while(cur != null){
+            if(cur.val != 9){
+                p=cur;
+            }
+            cur=cur.next;
+        }
+        
+        if(ans!=p)
+            ans=head;
+        p.val++;
+        p=p.next;
+        while(p != null){
+            p.val=0;
+            p=p.next;
+        }
+        
+        return ans;
+    }
+}
+
+C++:
+public class Solution {
+    public ListNode plusOne(ListNode head) {
+        ListNode ans = new ListNode(0);
+        ans.next=head;
+        ListNode p=ans;
+        ListNode cur=head;
+        
+        while(cur != null){
+            if(cur.val != 9){
+                p=cur;
+            }
+            cur=cur.next;
+        }
+        
+        if(ans!=p)
+            ans=head;
+        p.val++;
+        p=p.next;
+        while(p != null){
+            p.val=0;
+            p=p.next;
+        }
+        
+        return ans;
+    }
+}
