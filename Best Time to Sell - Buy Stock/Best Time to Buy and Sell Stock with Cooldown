@@ -1,0 +1,67 @@
+C++ v1:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int len=prices.size();
+        int buy=INT_MIN, sell=0;
+        
+        int pre=0;
+        int ppre=0;
+        for(int i=1; i<=len; ++i){
+            sell=max(sell, buy+prices[i-1]);
+            if(i>1)
+                buy=max(buy, ppre-prices[i-1]);
+            else
+                buy=-prices[i-1];
+            ppre=pre;
+            pre=sell;
+            
+        }
+        
+        return sell;
+    }
+};
+
+C++ v2:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int len=prices.size();
+        int buy[len+1]={0}, sell[len+1]={0}, cooldown[len+1]={0};
+        for(int i=0; i<=len; ++i)
+            buy[i]=INT_MIN;
+        
+        for(int i=1; i<=len; ++i){
+            sell[i]=max(sell[i-1], buy[i-1]+prices[i-1]);
+            if(i>1)
+                buy[i]=max(buy[i-1], sell[i-2]-prices[i-1]);
+            else
+                buy[i]=-prices[i-1];
+            
+        }
+        
+        return max(sell[len], cooldown[len]);
+    }
+};
+
+C++ v3:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int len=prices.size();
+        int buy[len+1]={0}, sell[len+1]={0}, cooldown[len+1]={0};
+        for(int i=0; i<=len; ++i)
+            buy[i]=INT_MIN;
+        
+        for(int i=1; i<=len; ++i){
+            sell[i]=buy[i-1]+prices[i-1];
+            buy[i]=max(buy[i-1], cooldown[i-1]-prices[i-1]);
+            cooldown[i]=max(cooldown[i-1], sell[i-1]);
+        }
+        
+        return max(sell[len], cooldown[len]);
+    }
+};
