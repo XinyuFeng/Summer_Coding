@@ -1,0 +1,74 @@
+C++ 1:
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if(k<1 || prices.size()<2) return 0;
+        int n=prices.size(), v=0, p=0;
+        priority_queue<int> Q;
+        stack<pair<int, int>>T;
+        while(p<n-1){
+            for(v=p; v<n-1&&prices[v]>=prices[v+1]; ++v);
+            for(p=v+1; p<n&&prices[p]>=prices[p-1]; ++p);
+            p--;
+            
+            while(!T.empty() && prices[v]<prices[T.top().first]){
+                Q.push(prices[T.top().second]-prices[T.top().first]);
+                T.pop();
+            }
+            
+            while(!T.empty() && prices[p]>prices[T.top().second]){
+                Q.push(prices[T.top().second]-prices[v]);
+                v=T.top().first;
+                T.pop();
+            }
+            T.push(make_pair(v, p));
+        
+        }
+        
+        while(T.size()){
+            Q.push(prices[T.top().second]-prices[T.top().first]);
+            T.pop();
+        }
+        
+        int ans=0;
+        for(int i=0; i<k&&!Q.empty(); ++i){
+            ans+=Q.top();
+            Q.pop();
+        }
+        return ans;
+    }
+};
+
+C++ 2:
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if(k==0) return 0;
+        if(k>=prices.size()/2){
+            int ans=0;
+            for(int i=1; i<prices.size(); ++i){
+                if(prices[i]>prices[i-1]) ans+=prices[i]-prices[i-1];
+            }
+            return ans;
+        }
+        int dp[k][2];
+        memset(dp, 0, sizeof(dp));
+        for(int i=0; i<k; ++i){
+            dp[i][0]=INT_MIN;
+        }
+        
+        for(int i=0; i<prices.size(); ++i){
+            for(int j=0; j<k; ++j){
+                dp[j][1]=max(dp[j][1], dp[j][0]+prices[i]);
+                if(j==0){
+                    dp[j][0]=max(dp[j][0], -prices[i]);
+                }
+                else{
+                    dp[j][0]=max(dp[j][0], dp[j-1][1]-prices[i]);
+                }
+                
+            }
+        }
+        return dp[k-1][1];
+    }
+};
