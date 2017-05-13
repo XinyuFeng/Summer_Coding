@@ -1,0 +1,37 @@
+Java version:
+public class Solution {
+    public String addBinary(String a, String b) {
+        int i=a.length()-1;
+        int j=b.length()-1;
+        int c=0;
+        StringBuilder ans=new StringBuilder();
+        while(i>=0 || j>=0 || c>0){
+            c+=(i>=0)? a.charAt(i)-'0' : 0;
+            c+=(j>=0)? b.charAt(j)-'0' : 0;
+            ans.append(c%2);
+            c/=2;
+            i--; j--;
+        }
+        
+        return ans.reverse().toString();
+    }
+}
+
+C++ version:
+public class Solution {
+    public String addBinary(String a, String b) {
+        int i=a.length()-1;
+        int j=b.length()-1;
+        int c=0;
+        StringBuilder ans=new StringBuilder();
+        while(i>=0 || j>=0 || c>0){
+            c+=(i>=0)? a.charAt(i)-'0' : 0;
+            c+=(j>=0)? b.charAt(j)-'0' : 0;
+            ans.append(c%2);
+            c/=2;
+            i--; j--;
+        }
+        
+        return ans.reverse().toString();
+    }
+}
