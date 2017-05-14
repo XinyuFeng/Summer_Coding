@@ -1,0 +1,57 @@
+C++ Graham algorithm:
+class Solution {
+public://Graham 
+    vector<Point> outerTrees(vector<Point>& points) {
+        if(points.size()<=2) return points;
+        Point StartPoint=points[0];
+        for(int i=0; i<points.size(); ++i){//find the left-bottom point
+            if(points[i].x<StartPoint.x || points[i].x==StartPoint.x && points[i].y<StartPoint.y){
+                StartPoint=points[i];
+            }
+        }
+        solarSort(points, StartPoint);//sort by counterclockwise solar angle
+        //points.push_back(StartPoint);
+        //return points;
+        vector<Point>ans;//stack simulation vector
+        ans.push_back(points[0]);
+        ans.push_back(points[1]);
+        int len=points.size();
+        for(int i=2; i<len; ++i){
+            Point top=ans.back();
+            ans.pop_back();
+            while(det(ans.back(), top, points[i])<0){
+                top=ans.back();
+                ans.pop_back();
+            }
+            ans.push_back(top);
+            ans.push_back(points[i]);
+        }
+        return ans;
+        
+    }
+    
+    int det(Point& A, Point& B, Point& C){
+        return (B.x-A.x)*(C.y-B.y)-(C.x-B.x)*(B.y-A.y);
+    }
+    void solarSort(vector<Point>& points, Point& S){
+        sort(points.begin(), points.end(), [S](Point& A, Point& B){
+            int x1 = A.x-S.x;
+            int y1 = A.y-S.y;
+            int x2 = B.x-S.x;
+            int y2 = B.y-S.y;
+            
+            int angle = x2*y1-y2*x1;
+            int dist = -x2*x2-y2*y2+x1*x1+y1*y1;
+            //return angle==0? dist : angle;
+            return angle==0? dist<0 : angle<0; 
+        });
+        int i;
+
+        for(i=points.size()-1; i>0&&det(S, points[i], points[i-1])==0; --i);
+        reverse(points.begin()+i, points.end());
+    }
+};
+
+C++ 2:(Convex Hull algorithm) (miss)
+https://discuss.leetcode.com/topic/89323/java-solution-convex-hull-algorithm-gift-wrapping-aka-jarvis-march
+
