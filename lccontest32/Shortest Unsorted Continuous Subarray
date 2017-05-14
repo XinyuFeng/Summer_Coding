@@ -1,0 +1,52 @@
+C++ 1: o(1) 0(n)
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int l=nums[0], s=INT_MAX, left=-1, right=-2;
+        for(int i=1; i<nums.size(); ++i){
+            if(nums[i]>=l)
+                l=nums[i];
+            else{
+                if(left==-1) left=i-1;
+                right=i;
+                s=min(s, nums[i]);
+            }
+        }
+        
+        for(int i=0; i<nums.size(); ++i){
+            if(s<nums[i]){
+                left=i;
+                break;
+            }
+        }
+        return right-left+1;
+    }
+};
+
+C++ 2: o(n) o(n)
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        multiset<int> T;
+        for(int i=0; i<nums.size(); ++i){
+            T.insert(nums[i]);
+        }
+        
+        int left=0, right=nums.size()-1;
+        auto l=T.begin();
+        auto r=T.end();
+        r--;
+        while(left<=right){
+            while(*l==nums[left]&&left<=right){
+                l++;
+                left++;
+            }
+            while(*r==nums[right]&&left<=right){
+                r--;
+                right--;
+            }
+            break;
+        }
+        return right-left+1;
+    }
+};
