@@ -1,0 +1,35 @@
+Java:
+public class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if(nums==null || nums.length == 0 || k <= 0){
+            return false;
+        }
+        
+        final TreeSet<Long> values = new TreeSet<>();
+        for(int i=0; i<nums.length; ++i){
+            final Long floor = values.floor((long)nums[i]+t);
+            final Long ceil = values.ceiling((long)nums[i]-t);
+            if(floor != null && floor>=nums[i] || ceil != null && ceil<=nums[i]) return true;
+            values.add((long)nums[i]);
+            
+            if(i>=k) values.remove((long)nums[i-k]);
+        }
+        return false;
+    }
+}
+
+C++:
+class Solution {
+public:
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+        set<long long> T;
+        int len=nums.size();
+        for(int i=0; i<len; ++i){
+            if(i>k) T.erase(nums[i-k-1]);
+            auto p = T.lower_bound((long long)nums[i]-t);
+            if(p!=T.end() && *p-nums[i]<=t) return true;
+            T.insert(nums[i]);
+        }
+        return false;
+    }
+};
