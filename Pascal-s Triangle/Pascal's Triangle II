@@ -1,0 +1,30 @@
+Java:
+public class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> ans = new ArrayList<>();
+        long val=1;
+        for(int i=1; i<=rowIndex; ++i){
+            ans.add((int)val);
+            val=val*(rowIndex-i+1)/i;
+        }
+        ans.add(1);
+        
+        return ans;
+    }
+}
+
+C++:
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> ans;
+        ans.resize(rowIndex+1);
+        ans[0]=ans[rowIndex]=1;
+        
+        for(int i=1; i<=(rowIndex+1)/2; ++i){
+            ans[i]=ans[rowIndex-i]=(long)ans[i-1]*((long)rowIndex-i+1)/i;
+        }
+        
+        return ans;
+    }
+};
