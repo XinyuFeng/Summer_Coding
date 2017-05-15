@@ -1,0 +1,17 @@
+Java:
+public class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> s = new HashSet<Integer>();
+        for(int i : nums)
+            if(!s.add(i)) return true;
+        return false;
+    }
+}
+
+C++:
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        return set<int>(nums.begin(), nums.end()).size()<nums.size();
+    }
+};
