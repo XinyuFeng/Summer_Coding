@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int trapRainWater(vector<vector<int>>& heightMap) {
+        if(heightMap.empty()) return 0;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>Q;
+        int row=heightMap.size(), col=heightMap[0].size();
+        int ans=0;
+        vector<vector<bool>> visited(row, vector<bool>(col, false));
+        for(int i=0; i<row; ++i){
+            for(int j=0; j<col; ++j){
+                if(!(i==0 || i==row-1 || j==0 || j==col-1)) continue;
+                auto t=make_pair(heightMap[i][j], i*col+j);
+                Q.push(t);
+                visited[i][j]=true;
+            }
+        }
+        vector<vector<int>>dir={{1,0}, {-1,0}, {0,1}, {0,-1}};
+        int bar=0;
+        while(Q.size()){
+            auto node=Q.top();
+            Q.pop();
+            bar=max(bar, node.first);
+            int r=node.second/col;
+            int c=node.second%col;
+            for(auto p : dir){
+                int x=r+p[0];
+                int y=c+p[1];
+                if(x<0 || x>=row || y<0 || y>=col || visited[x][y]) continue;
+                visited[x][y]=true;
+                if(heightMap[x][y]<bar) ans+=bar-heightMap[x][y];
+                Q.push(make_pair(heightMap[x][y], x*col+y));
+            }
+            
+        }
+        return ans;
+    }
+};
