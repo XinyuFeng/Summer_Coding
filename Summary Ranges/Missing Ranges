@@ -1,0 +1,40 @@
+C++:
+class Solution {
+public:
+    vector<string> findMissingRanges(vector<int>& nums, int lower, int upper) {
+        vector<string> ans;
+        if(nums.empty()){
+            ans.push_back(lower==upper? to_string(lower) : to_string(lower)+"->"+to_string(upper));
+            return ans;
+        }
+        
+        //lower->nums[0]
+        if(lower<nums[0]){
+            if(nums[0]-lower==1) ans.push_back(to_string(lower));
+            else ans.push_back(to_string(lower) + "->" + to_string(nums[0]-1));
+        }
+        //in nums[0]-nums[n]
+        for(int i=1; i<nums.size(); ++i){
+            if(nums[i]==nums[i-1]) continue;
+            if(nums[i]!=nums[i-1]+1){
+                if(nums[i]-nums[i-1]==2){
+                    ans.push_back(to_string(nums[i]-1));
+                }
+                else{
+                    ans.push_back(to_string(nums[i-1]+1)+"->"+to_string(nums[i]-1));
+                }
+            }
+        }
+        
+        //nums[n]->upper
+        int len=nums.size();
+        if(nums[len-1]<upper){
+            if(upper-nums[len-1]==1)
+               ans.push_back(to_string(upper));
+            else
+               ans.push_back(to_string(nums[len-1]+1)+"->"+to_string(upper)); 
+        }
+        
+        return ans;
+    }
+};
