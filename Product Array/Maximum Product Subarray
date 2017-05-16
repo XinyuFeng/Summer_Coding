@@ -1,0 +1,16 @@
+C++:
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int dps=1, dpm=1;
+        int ans=INT_MIN;
+        for(int i=0; i<nums.size(); ++i){
+            int tmp=dpm;
+            dpm=max(nums[i], max(nums[i]*dpm, nums[i]*dps));
+            dps=min(nums[i], min(nums[i]*tmp, nums[i]*dps));
+            ans=max(ans, dpm);
+        }
+        
+        return ans;
+    }
+};
