@@ -1,0 +1,64 @@
+Java:
+public class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> ans=new ArrayList<>();
+        if(nums==null || nums.length==0) return ans;
+        int left=0, right=0;
+        for(int i=1; i<nums.length; ++i){
+            if(nums[i]==nums[i-1]+1){
+                right=i;
+            }
+            else{
+                if(left==right){
+                    ans.add(nums[left]+"");
+                }
+                else{
+                    ans.add(nums[left]+"->"+nums[right]);
+                }
+                left=right=i;
+            }
+        }
+        if(left==right){
+            ans.add(nums[left]+"");
+        }
+        else{
+            ans.add(nums[left]+"->"+nums[right]);
+        }
+        
+        return ans;
+            
+        
+    }
+}
+
+C++:
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        int len=nums.size();
+        vector<string>ans;
+        if(len==0) return ans;
+        int left=0, right=0;
+        for(int i=1; i<len; ++i){
+            if(nums[i]==nums[i-1]+1){
+                right=i;
+            }
+            else{
+                if(left==right){
+                    ans.push_back(to_string(nums[left]));
+                }
+                else
+                    ans.push_back(to_string(nums[left])+"->"+to_string(nums[right]));
+                left=right=i;
+            }
+        }
+        if(left==right){
+            ans.push_back(to_string(nums[left]));
+        }
+        else
+            ans.push_back(to_string(nums[left])+"->"+to_string(nums[right]));
+            
+        return ans;
+        
+    }
+};
