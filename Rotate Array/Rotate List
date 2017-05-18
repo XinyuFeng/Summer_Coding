@@ -1,0 +1,31 @@
+C++:
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        
+        ListNode* ans=head;
+        ListNode* cur=head;
+        ListNode* tail;
+        int n=0;
+        while(cur){
+            n++;
+            if(cur->next==NULL) tail=cur;
+            cur=cur->next;
+        }
+        if(n==0) return ans;
+        cur=head;
+        k=k%n;
+        int count=0;
+        while(cur){
+            count++;
+            if(count==n-k && cur->next != NULL){
+                ans=cur->next;
+                cur->next=NULL;
+                tail->next=head;
+                break;
+            }
+            cur=cur->next;
+        }
+        return ans;
+    }
+};
