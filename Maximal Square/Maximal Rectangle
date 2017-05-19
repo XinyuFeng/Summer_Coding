@@ -1,0 +1,72 @@
+Java 1:
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix==null || matrix.length==0 || matrix[0].length==0) return 0;
+        int row=matrix.length, col=matrix[0].length;
+        int ans=0;
+        int[] left=new int[col];
+        int[] right=new int[col];
+        int [] height=new int[col];
+        Arrays.fill(right, col);
+        
+        for(int i=0; i<row; ++i){
+            int cur_left=0, cur_right=col;
+            for(int j=0; j<col; ++j){
+                if(matrix[i][j]=='1'){
+                    left[j]=Math.max(left[j], cur_left);
+                    height[j]++;
+                }
+                else{
+                    height[j]=0;
+                    left[j]=0;
+                    cur_left=j+1;
+                }
+            }
+            
+            for(int j=col-1; j>=0; --j){
+                if(matrix[i][j]=='1'){
+                    right[j]=Math.min(right[j], cur_right);
+                }
+                else{
+                    right[j]=col;
+                    cur_right=j;
+                }
+            }
+            for(int j=0; j<col; ++j){
+                ans=Math.max(ans, height[j]*(right[j]-left[j]));
+            }
+        }
+        
+        return ans;
+        
+    }
+}
+
+Java 2:
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix==null || matrix.length==0 || matrix[0].length==0) return 0;
+        int row=matrix.length, col=matrix[0].length;
+        int[] h=new int[col+1];
+        h[col]=0;
+        
+        int ans=0;
+        for(int i=0; i<row; ++i){
+            Stack<Integer> T = new Stack<>();
+            for(int j=0; j<=col; ++j){
+                if(j<col&&matrix[i][j]=='1'){
+                    h[j]+=1;
+                }
+                else h[j]=0;
+                
+                while(!T.isEmpty() && h[j]<h[T.peek()]){
+                    int bar=h[T.pop()];
+                    int idx=T.isEmpty()? -1 : T.peek();
+                    ans=Math.max(ans, bar*(j-idx-1));
+                }
+                T.push(j);
+            }
+        }
+        return ans;
+    }
+}
