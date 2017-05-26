@@ -1,0 +1,59 @@
+Java:
+public class Solution {
+    class result{
+        int inc;
+        int dec;
+        result(){
+            inc=0;
+            dec=0;
+        }
+    }
+    int ans=0;
+    public int longestConsecutive(TreeNode root) {
+        helper(root, null);
+        return ans;
+    }
+    
+    public result helper(TreeNode root, TreeNode pre){
+        result res = new result();
+        if(root==null) return res;
+        result left = helper(root.left, root);
+        result right = helper(root.right, root);
+        
+        ans = Math.max(ans, Math.max(left.inc+right.dec+1, left.dec+right.inc+1));
+        
+        if(pre!=null && root.val==pre.val+1){
+            res.inc=Math.max(left.inc, right.inc)+1;
+        }
+        if(pre!=null && root.val==pre.val-1){
+            res.dec=Math.max(left.dec, right.dec)+1;
+        }
+        return res;
+    }
+}
+
+C++:
+class Solution {
+public:
+    int longestConsecutive(TreeNode* root) {
+        int ans=0;
+        helper(root, NULL, ans);
+        return ans;
+    }
+    
+    pair<int, int> helper(TreeNode* root, TreeNode* pre, int& longest){
+        if(!root) return make_pair(0, 0);
+        auto left=helper(root->left, root, longest);
+        auto right=helper(root->right, root, longest);
+        longest=max(longest, max(left.first+right.second+1, left.second+right.first+1));
+        
+        int inc=0, dec=0;
+        if(pre && root->val==pre->val+1){
+            inc = max(left.first, right.first)+1;
+        }
+        if(pre && root->val==pre->val-1){
+            dec = max(left.second, right.second)+1;
+        }
+        return make_pair(inc, dec);
+    }
+};
