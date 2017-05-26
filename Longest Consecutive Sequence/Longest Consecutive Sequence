@@ -1,0 +1,31 @@
+Java:
+public class Solution {
+    public int longestConsecutive(int[] nums) {
+        HashMap<Integer, Integer> T = new HashMap<>();
+        int ans=0;
+        for(int n : nums){
+            if(T.getOrDefault(n, 0)!=0) continue;
+            int val=T.getOrDefault(n+1, 0)+T.getOrDefault(n-1, 0)+1;
+            T.put(n, val);
+            if(T.containsKey(n+1)) T.put(n+T.get(n+1), val);
+            if(T.containsKey(n-1)) T.put(n-T.get(n-1), val);
+            ans=Math.max(ans, val);
+        }
+        return ans;
+    }
+}
+
+C++:
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_map<int, int>T;
+        
+        int ans=0;
+        for(int q : nums){
+            if(T[q]) continue;
+            ans=max(ans, T[q]=T[q-T[q-1]]=T[q+T[q+1]]=T[q-1]+T[q+1]+1);
+        }
+        return ans;
+    }
+};
