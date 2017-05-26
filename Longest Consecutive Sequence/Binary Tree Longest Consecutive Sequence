@@ -1,0 +1,32 @@
+Java:
+public class Solution {
+    public int longestConsecutive(TreeNode root) {
+        return helper(root, null, 0);
+    }
+    
+    int helper(TreeNode root, TreeNode pre, int len){
+        if(root==null) return len;
+        if(pre!=null && root.val==pre.val+1) len++;
+        else len=1;
+        int left=helper(root.left, root, len);
+        int right=helper(root.right, root, len);
+        return Math.max(len, Math.max(left, right));
+    }
+}
+
+C++:
+class Solution {
+public:
+    int longestConsecutive(TreeNode* root) {
+        return helper(root, NULL, 0);
+    }
+    
+    int helper(TreeNode* root, TreeNode* pre, int len){
+        if(!root) return len;
+        if(pre && root->val==pre->val+1) len++;
+        else len=1;
+        int left=helper(root->left, root, len);
+        int right=helper(root->right, root, len);
+        return max(left, max(right,len));
+    }
+};
