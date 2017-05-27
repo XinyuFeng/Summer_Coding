@@ -1,0 +1,22 @@
+Java:
+public class Solution {
+    public boolean canAttendMeetings(Interval[] intervals) {
+        Arrays.sort(intervals, (l1, l2)->Integer.compare(l1.start, l2.start));
+        for(int i=1; i<intervals.length; ++i){
+            if(intervals[i].start<intervals[i-1].end) return false;
+        }
+        return true;
+    }
+}
+
+C++:
+class Solution {
+public:
+    bool canAttendMeetings(vector<Interval>& intervals) {
+        sort(intervals.begin(), intervals.end(), [](Interval l1, Interval l2){return l1.start<l2.start;});
+        for(int i=1; i<intervals.size(); ++i){
+            if(intervals[i].start<intervals[i-1].end) return false;
+        }
+        return true;
+    }
+};
