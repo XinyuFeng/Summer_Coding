@@ -1,0 +1,38 @@
+Java:
+public class Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        if(intervals==null || intervals.length==0) return 0;
+        Arrays.sort(intervals, (l1, l2)->Integer.compare(l1.start, l2.start));
+        PriorityQueue<Integer> Q = new PriorityQueue<Integer>(intervals.length, (l1, l2)->Integer.compare(l1, l2));
+        Q.offer(intervals[0].end);
+        int ans=1;
+        for(int i=1; i<intervals.length; ++i){
+            while(Q.size()!=0 && intervals[i].start>=Q.peek()){
+                Q.poll();
+            }
+            Q.offer(intervals[i].end);
+            ans=Math.max(ans, Q.size());
+            
+        }
+        return ans;
+    }
+}
+
+C++:
+class Solution {
+public:
+    int minMeetingRooms(vector<Interval>& intervals) {
+        if(intervals.size()<=1) return intervals.size();
+        sort(intervals.begin(), intervals.end(), [](const Interval& l1, const Interval& l2){return l1.start<l2.start;});
+        priority_queue<int, vector<int>, greater<int>> Q;
+        Q.push(intervals[0].end);
+        
+        int ans=0;
+        for(int i=1; i<intervals.size(); ++i){
+            if(intervals[i].start>=Q.top()) Q.pop();
+            Q.push(intervals[i].end);
+            ans=max(ans, (int)Q.size());
+        }
+        return ans;
+    }
+};
