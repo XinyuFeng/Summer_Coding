@@ -1,0 +1,40 @@
+Java: O(0)space
+public class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        //O(0)
+        int row=triangle.size();
+        int ans=Integer.MAX_VALUE;
+        if(row==1) return triangle.get(0).get(0);
+        for(int i=1; i<row; ++i){
+            for(int j=0; j<=i; ++j){
+                triangle.get(i).set(j, (triangle.get(i).get(j)+Math.min(triangle.get(i-1).get(Math.max(j-1, 0)), triangle.get(i-1).get(Math.min(j, i-1)))));
+                if(i==row-1){
+                    ans=Math.min(ans, triangle.get(i).get(j));
+                }
+                
+            }
+        }
+        return ans;
+    }
+}
+
+C++:
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        if(triangle.empty() || triangle[0].empty()) return 0;
+        int row=triangle.size();
+        if(row==1) return triangle[0][0];
+        vector<int> dp (row, 0);
+        dp[0]=triangle[0][0];
+        int ans=INT_MAX;
+        for(int i=1; i<row; ++i){
+            for(int j=i; j>=0; --j){
+                dp[j]=min(dp[min(j, i-1)], dp[max(0, j-1)])+triangle[i][j];
+                if(i==row-1)
+                    ans=min(ans, dp[j]);
+            }
+        }
+        return ans;
+    }
+};
