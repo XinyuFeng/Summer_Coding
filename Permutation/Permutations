@@ -1,0 +1,44 @@
+Java:
+public class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<List<Integer>>();
+        List<Integer> n = IntStream.of(nums).boxed().collect(Collectors.toList());
+        dfs(n, ans, 0);
+        return ans;
+    }
+    
+    public void dfs(List<Integer> nums, List<List<Integer>> ans, int idx){
+        if(idx==nums.size()){
+            ans.add(new ArrayList(nums));
+            return;
+        }
+        for(int i=idx; i<nums.size(); ++i){
+            Collections.swap(nums, idx, i);
+            dfs(nums, ans, idx+1);
+            Collections.swap(nums, idx, i);
+        }
+    }
+}
+
+C++:
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        dfs(nums,ans, 0);
+        return ans;
+    }
+    
+    void dfs(vector<int>& nums, vector<vector<int>>& ans, int idx){
+        if(idx==nums.size()){
+            ans.push_back(nums);
+            return;
+        }
+        
+        for(int i=idx; i<nums.size(); ++i){
+            swap(nums[idx], nums[i]);
+            dfs(nums, ans, idx+1);
+            swap(nums[idx], nums[i]);
+        }
+    }
+};
