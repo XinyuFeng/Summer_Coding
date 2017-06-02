@@ -1,0 +1,24 @@
+Java:
+public class Solution {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(n<=1) return ans;
+        List<Integer> tmp=new ArrayList<>();
+        dfs(n, tmp, ans, 2);
+        return ans;
+    }
+    
+    public void dfs(int n, List<Integer> tmp, List<List<Integer>> ans, int num){
+        
+        for(int i=num; i<=(int)Math.sqrt(n); ++i){
+            if(n%i==0){
+                tmp.add(i);
+                tmp.add(n/i);
+                ans.add(new ArrayList<>(tmp));
+                tmp.remove(tmp.size()-1);
+                dfs(n/i, tmp, ans, i);
+                tmp.remove(tmp.size()-1);
+            }
+        }
+    }
+}
