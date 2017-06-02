@@ -1,0 +1,46 @@
+Java:
+public class Solution {
+    public String getPermutation(int n, int k) {
+        StringBuilder sb = new StringBuilder();
+        StringBuilder ans = new StringBuilder();
+        int f=1;
+        for(int i=1; i<=n; ++i){
+            f*=i;
+            sb.append(i);
+        }
+        k--;
+        for(int i=0; i<n; ++i){
+            f/=n-i;
+            int idx=k/f;
+            ans.append(sb.charAt(idx));
+            sb.deleteCharAt(idx);
+            k%=f;
+        }
+        return String.valueOf(ans);
+    }
+}
+
+C++:
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string s(n, '0');
+        string ans(n, '0');
+        int f=1;
+        for(int i=1; i<=n; ++i){
+            f*=i;
+            s[i-1]+=i;
+        }
+        
+        k--;
+        for(int i=0; i<n; ++i){
+            f/=n-i;
+            int j=k/f;
+            char c=s[j];
+            ans[i]=c;
+            s.erase(j,1);
+            k%=f;
+        }
+        return ans;
+    }
+};
