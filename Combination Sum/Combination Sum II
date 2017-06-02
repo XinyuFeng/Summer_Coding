@@ -1,0 +1,38 @@
+Java dp:
+public class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<List<Integer>>> dp=new ArrayList<>();
+        Arrays.sort(candidates);
+        
+        for(int i=0; i<target; ++i){
+            dp.add(new ArrayList<>());
+        }
+        for(int i=candidates.length-1, count=0; i>=0; --i){//counts the duplicate number
+            if(i<candidates.length-1 && candidates[i]==candidates[i+1]) count++;
+            else count=0;
+            
+            for(int j=target; j>=1 && j>=candidates[i]; --j){
+                if(j==candidates[i] && count==0){
+                    dp.get(j-1).add(Arrays.asList(candidates[i]));
+                    break;
+                }
+                else if(candidates[i]<j){
+                    for(List<Integer> l : dp.get(j-candidates[i]-1)){
+                        if(l.size()==0) continue;//empty list
+                        if(l.size()<count) continue; //this l has been used duplicately, if not, l.size() must larger than count
+                        if(count>0 && l.get(count-1)!=candidates[i]) continue;//duplicate usage, else l.get(count-1) must equal to candidates[i]
+                        List<Integer> cl=new ArrayList<>();
+                        cl.add(candidates[i]);
+                        cl.addAll(l);
+                        dp.get(j-1).add(cl);
+                    }
+                }
+            }
+        }
+
+        return dp.get(target-1);
+    }
+    
+}
+
+C++:
