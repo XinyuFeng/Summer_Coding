@@ -1,0 +1,85 @@
+Java:
+public class RandomizedCollection {
+    public class Pair{
+        int first;
+        int second;
+        public Pair(int a, int b){
+            first=a;
+            second=b;
+            
+        }
+    }
+    ArrayList<Pair> container;
+    HashMap<Integer, ArrayList<Integer>> T;
+    /** Initialize your data structure here. */
+    public RandomizedCollection() {
+        container=new ArrayList<>();
+        T=new HashMap<>();
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    public boolean insert(int val) {
+        boolean check=T.containsKey(val);
+        if(check==false){
+            T.put(val, new ArrayList<>());
+        }
+        container.add(new Pair(val, T.get(val).size()));
+        T.get(val).add(container.size()-1);
+        return !check;
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    public boolean remove(int val) {
+        if(T.containsKey(val)==false) return false;
+        Pair last=container.get(container.size()-1);
+        int idx=T.get(val).get(T.get(val).size()-1);
+        T.get(last.first).set(last.second,idx);
+        container.set(idx, last);
+        container.remove(container.size()-1);
+        T.get(val).remove(T.get(val).size()-1);
+        if(T.get(val).size()==0) T.remove(val);
+        return true;
+    }
+    
+    /** Get a random element from the collection. */
+    public int getRandom() {
+        return container.get((int)(Math.random()*container.size())).first;
+    }
+}
+
+C++:
+class RandomizedCollection {
+private:
+    map<int, vector<int>> dic;
+    vector<pair<int, int>> arr;
+    
+public:
+    RandomizedCollection() {
+    }
+
+    bool insert(int val) {
+        auto t=make_pair(val, dic[val].size());
+        arr.push_back(t);//add val in arr
+        dic[val].push_back(arr.size() - 1);//add its index in dic[val]
+        return dic[val].size() == 1;
+    }
+    
+    bool remove(int val) {
+        if(dic[val].size() == 0)
+        {
+            return false;
+        }
+        
+        auto last=arr.back();
+        int idx=dic[val].back();
+        dic[last.first][last.second]=idx;
+        swap(arr[idx], arr[arr.size()-1]);
+        arr.pop_back();
+        dic[val].pop_back();
+        return true;
+    }
+
+    int getRandom() {
+        return arr[rand()%arr.size()].first;
+    }
+};
