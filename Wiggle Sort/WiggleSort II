@@ -1,0 +1,28 @@
+C++:
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        int n=nums.size();
+        auto ptr = nums.begin()+n/2;
+        nth_element(nums.begin(), ptr, nums.end());
+        int median= *ptr;
+        int i=0, left=0, right=nums.size()-1;
+            
+        while(i<=right){
+            if(nums[newIdx(i, n)]>median){
+                swap(nums[newIdx(i++, n)], nums[newIdx(left++, n)]);
+            }
+            else if(nums[newIdx(i, n)]<median){
+                swap(nums[newIdx(i, n)], nums[newIdx(right--, n)]);
+            }
+            else{
+                i++;
+            }
+        }
+    
+    }
+    
+    int newIdx(int idx, int n){
+        return (1+2*idx)%(n|1);
+    }
+};
