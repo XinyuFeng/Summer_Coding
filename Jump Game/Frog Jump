@@ -1,0 +1,21 @@
+Java:
+public class Solution {
+    public boolean canCross(int[] stones) {
+        HashMap<Integer, Set<Integer>> T = new HashMap<>();
+        for(int i=0; i<stones.length; ++i){
+            T.put(stones[i], new HashSet<Integer>());
+        }
+        T.get(stones[0]).add(0);
+        
+        for(int i=0; i<stones.length; ++i){
+            for(int k : T.get(stones[i])){
+                for(int step=k-1; step<=k+1; ++step){
+                    if(step>0 && T.containsKey(stones[i]+step)){
+                        T.get(stones[i]+step).add(step);
+                    }
+                }
+            }
+        }
+        return T.get(stones[stones.length-1]).size()>0;
+    }
+}
