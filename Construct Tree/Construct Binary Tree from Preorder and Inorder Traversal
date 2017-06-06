@@ -1,0 +1,59 @@
+C++:
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        unordered_map<int, int> T;
+        for(int i=0; i<inorder.size(); ++i){
+            T[inorder[i]]=i;
+        }
+        return helper(preorder, inorder, 0, 0, inorder.size()-1, T);
+    }
+    
+    TreeNode* helper(vector<int>& preorder, vector<int>& inorder, int preStart, int inStart, int inEnd, unordered_map<int,int>& T){
+        if(preStart>=preorder.size() || inStart>inEnd) return NULL;
+        TreeNode* root=new TreeNode(preorder[preStart]);
+        root->left=helper(preorder, inorder, preStart+1, inStart, T[preorder[preStart]]-1, T);
+        root->right=helper(preorder, inorder, preStart+T[preorder[preStart]]-inStart+1, T[preorder[preStart]]+1, inEnd, T);
+        return root;
+    }
+};
+
+iterate:
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.empty()) return NULL;
+        TreeNode* root=new TreeNode(preorder[0]);
+        stack<TreeNode*>T;
+        T.push(root);
+        int i=1, j=0;
+        bool flag=false;
+        TreeNode* t=root;
+        while(i<preorder.size()){
+            if(T.size() && T.top()->val==inorder[j]){
+                flag=true;
+                t=T.top();
+                T.pop();
+                j++;
+            }
+            else{
+                if(flag==true){
+                    flag=false;
+                    t->right=new TreeNode(preorder[i]);
+                    t=t->right;
+                    i++;
+                    T.push(t);
+                }
+                else{
+                    t->left=new TreeNode(preorder[i]);
+                    t=t->left;
+                    i++;
+                    T.push(t);
+                }
+            }
+        }
+        return root;
+    }
+    
+    
+};
