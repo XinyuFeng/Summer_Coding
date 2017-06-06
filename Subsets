@@ -1,0 +1,59 @@
+C++1:
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int len=nums.size();
+        vector<vector<int>> ans(1, vector<int>());
+        for(int i=0; i<len; ++i){
+            int n=ans.size();
+            for(int j=0; j<n; ++j){
+                ans.push_back(ans[j]);
+                ans.back().push_back(nums[i]);
+            }
+        }
+        return ans;
+    }
+    
+};
+
+C++2:
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int num_subset = pow(2, nums.size());
+        int mul=1;
+        vector<vector<int>> ans(num_subset, vector<int>());
+        for(int i=0; i<num_subset; ++i){
+            vector<int> tmp; 
+            int j=i, k=0;
+            while(j){
+                if(j&1) ans[i].push_back(nums[k]);
+                j>>=1;
+                k++;
+            }
+        }
+        return ans;
+    }
+    
+};
+
+C++3:
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> tmp;
+        ans.push_back(tmp);
+        dfs(nums, tmp, ans, 0);
+        return ans;
+    }
+    
+    void dfs(vector<int>& nums, vector<int>& tmp, vector<vector<int>>& ans, int idx){
+        for(int i=idx; i<nums.size(); ++i){
+            tmp.push_back(nums[i]);
+            ans.push_back(tmp);
+            dfs(nums, tmp, ans, i+1);
+            tmp.pop_back();
+        }
+    }
+};
