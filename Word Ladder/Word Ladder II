@@ -1,0 +1,85 @@
+Java:
+public class Solution {
+    HashMap<String, List<String>> map;
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        List<List<String>> ans=new ArrayList<>();
+        map=new HashMap<>();
+        LinkedList<String> T=new LinkedList<>();
+        HashMap<String, Integer> H=new HashMap<>();
+        HashMap<String, Boolean> visited=new HashMap<>();
+        for(int i=0; i<wordList.size(); ++i){
+            H.put(wordList.get(i), Integer.MAX_VALUE);
+        }
+        
+        H.put(beginWord, 1);
+        if(wordList.size()==0 || H.containsKey(endWord)==false){
+            return ans;
+        }
+        
+        T.add(beginWord);
+        visited.put(beginWord, true);
+        int level=0;
+        Boolean isFindEnd=false;
+        while(!T.isEmpty()){
+            int len=T.size();
+            level++;
+            
+            if(isFindEnd) break;
+            
+            while(len-->0){
+                String node=T.removeFirst();
+                H.remove(node);
+                StringBuilder s=new StringBuilder(node);
+                for(int i=0; i<node.length(); ++i){
+                    char tmp=s.charAt(i);
+                    
+                    for(char c='a'; c<='z'; ++c){
+                        s.setCharAt(i, c);
+                        String t=s.toString();
+                        if(H.containsKey(t)){
+                            if(level>H.get(t)) continue;
+                            else if(level<H.get(t)){
+                                T.add(t);
+                                H.put(t, level);
+                            }
+                            
+                            if(t.equals(endWord)){
+                                isFindEnd=true;
+                            }
+                            
+                            if(map.containsKey(t)){
+                                map.get(t).add(node);
+                            }
+                            else{
+                                List<String> l=new ArrayList<>();
+                                l.add(node);
+                                map.put(t, l);
+                                
+                            }
+                        }
+                    }
+                    s.setCharAt(i,tmp);
+                }
+            }
+        }
+        List<String> path=new ArrayList<>();
+        backtrack(endWord, beginWord, path, ans);
+        return ans;
+    }
+    
+    public void backtrack(String target, String beginWord, List<String> path, List<List<String>> ans){
+        if(target.equals(beginWord)){
+            path.add(0, target);
+            ans.add(new ArrayList<>(path));
+            path.remove(0);
+            return;
+        }
+        path.add(0, target);
+        if(map.containsKey(target)){
+            for(String s: map.get(target)){
+                backtrack(s, beginWord, path, ans);
+            }
+        }
+        path.remove(0);
+    }
+}
