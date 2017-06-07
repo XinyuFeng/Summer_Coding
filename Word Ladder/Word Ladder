@@ -1,0 +1,90 @@
+Java: 2 end:
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> beginSet=new HashSet<String>();
+        Set<String> endSet=new HashSet<String>();
+        HashMap<String, Integer> H=new HashMap<>();
+        for(int i=0; i<wordList.size(); ++i){
+            H.put(wordList.get(i), H.getOrDefault(wordList.get(i), 0)+1);
+        }
+        beginSet.add(beginWord);
+        if(H.containsKey(endWord)){
+            endSet.add(endWord);
+        }
+        
+        
+        int ans=1;
+        while(!beginSet.isEmpty() && !endSet.isEmpty()){
+            if(beginSet.size()>endSet.size()){
+                Set<String> set=beginSet;
+                beginSet=endSet;
+                endSet=set;
+            }
+            Set<String>tmp=new HashSet<String>();
+            for(String word: beginSet){
+                char[] chs=word.toCharArray();
+                
+                for(int i=0; i<chs.length; ++i){
+                    for(char c='a'; c<='z'; ++c){
+                        char old=chs[i];
+                        chs[i]=c;
+                        String target = String.valueOf(chs);
+                        
+                        if(endSet.contains(target)){
+                            return ans+1;
+                        }
+                        if(H.containsKey(target)){
+                            tmp.add(target);
+                            H.put(target, H.get(target)-1);
+                            if(H.get(target)==0){
+                                H.remove(target);
+                            }
+                        }
+                        chs[i]=old;
+                    }
+                }
+            }
+            beginSet=tmp;
+            ans++;
+        }
+        return 0;
+    }
+}
+
+Java 1 end bfs:
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        LinkedList<String> T=new LinkedList<>();
+        HashMap<String, Integer> H=new HashMap<>();
+        for(int i=0; i<wordList.size(); ++i){
+            H.put(wordList.get(i), H.getOrDefault(wordList.get(i), 0)+1);
+        }
+        
+        T.add(beginWord);
+        int ans=0;
+        while(!T.isEmpty()){
+            int len=T.size();
+            ans++;
+            while(len-->0){
+                String node=T.removeFirst();
+                StringBuilder s=new StringBuilder(node);
+                for(int i=0; i<node.length(); ++i){
+                    char tmp=s.charAt(i);
+                    
+                    for(char c='a'; c<='z'; ++c){
+                        s.setCharAt(i, c);
+                        String t=s.toString();
+                        if(H.containsKey(t)){
+                            if(t.equals(endWord)) return ans+1;
+                            H.put(t, H.get(t)-1);
+                            if(H.get(t)==0) H.remove(t);
+                            T.add(t);
+                        }
+                    }
+                    s.setCharAt(i,tmp);
+                }
+            }
+        }
+        return 0;
+    }
+}
