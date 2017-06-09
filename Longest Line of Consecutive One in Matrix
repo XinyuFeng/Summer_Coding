@@ -1,0 +1,39 @@
+Java:
+
+public class Solution {
+    public int longestLine(int[][] M) {
+        if(M==null || M.length==0 || M[0].length==0) return 0;
+        int row=M.length, col=M[0].length;
+        //int hori=0, verti=0, main=0, sub=0;
+        int ans=0;
+        
+        for(int i=0; i<row; ++i){
+            for(int j=0, hori=0; j<col; ++j){
+                hori=(M[i][j]==1? hori+1 : 0);
+                ans=Math.max(ans, hori);
+            }
+        }
+        
+        for(int j=0; j<col; ++j){
+            for(int i=0, verti=0; i<row; ++i){
+                verti=(M[i][j]==1? verti+1 : 0);
+                ans=Math.max(ans, verti);
+            }
+        }
+        
+        for(int k=0; k<row+col; ++k){
+            //Main diagnal
+            for(int i=Math.max(0, row-1-k), j=Math.max(0, k-row), main=0; i<row && j<col; i++, j++){
+                main=(M[i][j]==1? main+1 : 0);
+                ans=Math.max(ans, main);
+            }
+            
+            //Sub diagnal
+            for(int i=Math.min(k, row-1), j=Math.max(0, k-row), sub=0; i>=0 && j<col; i--, j++){
+                sub=(M[i][j]==1? sub+1 : 0);
+                ans=Math.max(ans, sub);
+            }
+        }
+        return ans;
+    }
+}
