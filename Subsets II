@@ -1,0 +1,43 @@
+Java 1:
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<>();
+        ans.add(new ArrayList<Integer>());
+        Arrays.sort(nums);
+        List<Integer> tmp=new ArrayList<>();
+        helper(nums, tmp, ans, 0);
+        return ans;
+    }
+    
+    public void helper(int[] nums, List<Integer> tmp, List<List<Integer>> ans, int idx){
+        
+        for(int i=idx; i<nums.length; ++i){
+            if(i>idx && nums[i]==nums[i-1]) continue;
+            tmp.add(nums[i]);
+            ans.add(new ArrayList<>(tmp));
+            helper(nums, tmp, ans, i+1);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+}
+
+Java 2:
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> ans=new ArrayList<>();
+        ans.add(new ArrayList<Integer>());
+        Arrays.sort(nums);
+        int pre=1;
+        for(int i=0; i<nums.length; ++i){
+            int len=ans.size();
+            if(i>0 && nums[i]!=nums[i-1]){
+                pre=len;
+            }
+            for(int j=len-pre; j<len; ++j){
+                ans.add(new ArrayList<Integer>(ans.get(j)));
+                ans.get(ans.size()-1).add(nums[i]);
+            }
+        }
+        return ans;
+    }
+}
