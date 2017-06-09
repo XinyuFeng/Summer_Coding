@@ -1,0 +1,18 @@
+Java:
+public class Solution {
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        if(nums==null || nums.length==0 || nums[0].length==0) return nums;
+        int row=nums.length, col=nums[0].length;
+        if(r*c != row*col) return nums;
+        int[][] ans=new int[r][c];
+        
+        for(int i=0; i<row; ++i){
+            for(int j=0; j<col; ++j){
+                int idx=i*col+j;
+                int ni=idx/c, nj=idx%c;
+                ans[ni][nj]=nums[i][j];
+            }
+        }
+        return ans;
+    } 
+}
