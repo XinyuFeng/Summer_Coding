@@ -1,0 +1,25 @@
+Java:
+public class Solution {
+    public int thirdMax(int[] nums) {
+        long a=Long.MIN_VALUE, b=Long.MIN_VALUE, c=Long.MIN_VALUE;
+        int count=0;
+        for(int i=0; i<nums.length; ++i){
+            if(nums[i]>a){
+                c=b;
+                b=a;
+                a=(long)nums[i];
+
+            }
+            else if(nums[i]<a && (nums[i]>b)){
+                c=b;
+                b=(long)nums[i];
+
+            }
+            else if(nums[i]<b && nums[i]>=c){
+                c=(long)nums[i];
+
+            }
+        }
+        return c>Long.MIN_VALUE? (int)c : (int)a;
+    }
+}
