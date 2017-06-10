@@ -1,0 +1,53 @@
+C++:
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        if(nums.empty() || k<0) return 0;
+        unordered_map<int, int> T;
+        for(int i=0; i<nums.size(); ++i){
+            T[nums[i]]++;
+        }
+        
+        int ans=0;
+        for(auto p : T){
+            if(k==0){
+                if(p.second>=2){
+                    ans++;
+                }
+            }
+            else{
+                if(T.count(p.first+k)){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+Java:
+public class Solution {
+    public int findPairs(int[] nums, int k) {
+        if(nums==null || nums.length==0 || k<0) return 0;
+        Map<Integer, Integer> T=new HashMap<>();
+        for(int i=0; i<nums.length; ++i){
+            T.put(nums[i], T.getOrDefault(nums[i], 0)+1);
+        }
+        
+        int ans=0;
+        for(Map.Entry<Integer, Integer> entry : T.entrySet()){
+            if(k==0){
+                if(entry.getValue()>=2){
+                    ans++;
+                }
+            }
+            else{
+                if(T.containsKey(entry.getKey()+k)){
+                    ans++;
+                }
+            }
+        }
+        
+        return ans;
+    }
+}
