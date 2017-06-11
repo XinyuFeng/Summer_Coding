@@ -1,0 +1,61 @@
+Java:
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    
+    public int gcd(int a, int b){
+        if(b==0) return a;
+        return gcd(b, a%b);
+    }
+    
+    public int maxPoints(Point[] points) {
+        if(points==null || points.length==0) return 0;
+        if(points.length<=2) return points.length;
+        
+        int ans=0;
+        Map<Integer, Map<Integer, Integer>> T=new HashMap<>();
+        for(int i=0; i<points.length; ++i){
+            int overlap=0, tmpMax=0;
+            T.clear();
+            for(int j=i+1; j<points.length; ++j){
+                int dx=points[i].x-points[j].x;
+                int dy=points[i].y-points[j].y;
+                
+                if(dx==0 && dy==0){
+                    overlap++;
+                    continue;
+                }
+                int res=gcd(dx, dy);
+                if(res!=0){
+                    dx/=res;
+                    dy/=res;
+                }
+                
+                if(T.containsKey(dx)){
+                    if(T.get(dx).containsKey(dy)){
+                        T.get(dx).put(dy, T.get(dx).get(dy)+1);
+                    }
+                    else{
+                        T.get(dx).put(dy, 1);
+                    }
+                }
+                else{
+                    Map<Integer, Integer> tmp=new HashMap<>();
+                    tmp.put(dy, 1);
+                    T.put(dx, tmp);
+                }
+                
+                tmpMax=Math.max(tmpMax, T.get(dx).get(dy));
+            }
+            ans=Math.max(ans, tmpMax+overlap+1);
+        }
+        return ans;
+    }
+}
