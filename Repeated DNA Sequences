@@ -1,0 +1,45 @@
+C++:
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        char hashMap[1048576]={0};
+        vector<string> ans;
+        int len=s.size(), hashNum=0;
+        if(len<=10) return ans;
+        
+        for(int i=0; i<9; ++i){
+            hashNum=hashNum<<2 | (s[i]-'A'+1)%5;
+        }
+        
+        for(int i=9; i<len; ++i){
+            hashNum=(hashNum<<2 | (s[i]-'A'+1)%5) & 0xfffff;
+            if(hashMap[hashNum]==1){
+                ans.push_back(s.substr(i-9, 10));
+                hashMap[hashNum]=2;
+            }
+            else if(hashMap[hashNum]==0){
+                hashMap[hashNum]=1;
+            }
+        }
+        
+        return ans;
+    }
+};
+
+Java:
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        HashSet<String> set=new HashSet<>();
+        HashSet<String> doubleSet=new HashSet<>();
+        
+        for(int i=0; i<s.length()-9; ++i){
+            String tmp=s.substring(i, i+10);
+            if(!set.add(tmp)){
+                doubleSet.add(tmp);
+            }
+        }
+        
+        List<String> ans=new ArrayList<>(doubleSet);
+        return ans;
+    }
+}
