@@ -1,0 +1,59 @@
+C++:
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        
+        for(int i=0; i<9; ++i){
+            int row=0, col=0, cube=0;
+            for(int j=0; j<9; ++j){
+                if(board[i][j]!='.'){
+                    if((row>>(board[i][j]-'1'))&1) return false;
+                    else{
+                        row|=(1<<(board[i][j]-'1'));
+                    }
+                }
+                if(board[j][i]!='.'){
+                    if((col>>(board[j][i]-'1'))&1) return false;
+                    else{
+                        col|=(1<<(board[j][i]-'1'));
+                    }
+                }   
+                int rowidx=3*(i/3);
+                int colidx=3*(i%3);
+                char c=board[rowidx+j/3][colidx+j%3];
+                if(c!='.'){
+                    if((cube>>(c-'1'))&1) return false;
+                    else{
+                        cube|=(1<<(c-'1'));
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};
+
+Java:
+public class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        HashSet<Character> rows = new HashSet<>();
+        HashSet<Character> cols = new HashSet<>();
+        HashSet<Character> cubes = new HashSet<>();
+        
+        for(int i=0; i<9; ++i){
+            rows.clear();
+            cols.clear();
+            cubes.clear();
+            for(int j=0; j<9; ++j){
+                if(board[i][j]!='.' && !rows.add(board[i][j])) return false;
+                if(board[j][i]!='.' && !cols.add(board[j][i])) return false;
+                
+                int rowidx=3*(i/3);
+                int colidx=3*(i%3);
+                if(board[rowidx+j/3][colidx+j%3]!='.' && !cubes.add(board[rowidx+j/3][colidx+j%3])) return false;
+            }
+            
+        }
+        return true;
+    }
+}
