@@ -1,0 +1,53 @@
+Java:
+public class Solution {
+    char[] T;
+    List<String> ans;
+    public List<String> generatePalindromes(String s) {
+        T=new char[128];
+        ans=new ArrayList<String>();
+        int odd=0;
+        
+        for(char c: s.toCharArray()){
+            T[c]++;
+            if(T[c]%2==1){
+                odd++;
+            }
+            else{
+                odd--;
+            }
+        }
+        if(odd>1) return ans;
+        
+        StringBuilder sb=new StringBuilder();
+        helper(sb, s.length());
+        return ans;
+    }
+    
+    public void helper(StringBuilder sb, int len){
+        if(sb.length()==len){
+            ans.add(sb.toString());
+            return;
+        }
+        for(int i=0; i<128; ++i){
+           if(T[i]%2==1){
+                T[i]--;
+                sb.insert(sb.length()/2,(char)i);
+                
+                if(sb.length()==len){
+                    ans.add(sb.toString());
+                    return;
+                }
+            }
+            if(T[i]>0){
+                T[i]-=2;
+                sb.insert(0, (char)i);
+                sb.append((char)i);
+                helper(sb, len);
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(sb.length()-1);
+                T[i]+=2;
+            }
+        }
+    }
+    
+}
