@@ -1,0 +1,19 @@
+Java:
+public class Solution {
+    public boolean canPermutePalindrome(String s) {
+        char[] T=new char[256];
+        
+        int odd=0;
+        for(char c: s.toCharArray()){
+            T[c]++;
+            if(T[c]%2==1){
+                odd++;
+            }
+            else{
+                odd--;
+            }
+            
+        }
+        return odd<=1;
+    }
+}
