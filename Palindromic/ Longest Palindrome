@@ -1,0 +1,18 @@
+Java:
+public class Solution {
+    public int longestPalindrome(String s) {
+        int odd=0;
+        char[] T=new char[128];
+        for(char c: s.toCharArray()){
+            T[c]++;
+            if(T[c]%2==1){
+                odd++;
+            }
+            else{
+                odd--;
+            }
+        }
+        
+        return odd==0 ? s.length() : s.length()-odd+1;
+    }
+}
