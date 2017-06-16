@@ -1,0 +1,43 @@
+Java:
+public class Solution {
+    List<List<String>> ans;
+    List<String> cur;
+    boolean[][] dp;
+    public List<List<String>> partition(String s) {
+        ans=new ArrayList<>();
+        cur=new ArrayList<>();
+        dp=new boolean[s.length()][s.length()];
+        
+        for(int i=0; i<s.length(); ++i){
+            for(int j=i; j>=0; --j){
+                if(s.charAt(i)==s.charAt(j) && (i-j<=2 || dp[j+1][i-1])){
+                    dp[j][i]=true;
+                }
+            }
+        }
+        helper(s, 0);
+        return ans;
+    }
+    
+    public void helper(String s, int idx){
+        if(idx>=s.length()){
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        
+        for(int i=idx; i<s.length(); ++i){
+            if(dp[idx][i]){
+                if(i==idx){
+                    cur.add(Character.toString(s.charAt(i)));
+                }
+                else{
+                    cur.add(s.substring(idx, i+1));
+                }
+                helper(s, i+1);
+                cur.remove(cur.size()-1);
+            }
+            
+        }
+    }
+    
+}
