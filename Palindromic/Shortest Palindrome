@@ -1,0 +1,32 @@
+Java:
+public class Solution {
+    public String shortestPalindrome(String s) {
+        String tmp = s+'#'+new StringBuilder(s).reverse().toString();
+        int[] table = getTable(tmp);
+        return new StringBuilder(s.substring(table[table.length-1])).reverse().toString() + s;
+    }
+    
+    public int[] getTable(String s){
+        int[] table=new int[s.length()];
+        int idx=0;
+        char[] arr=s.toCharArray();
+        for(int i=1; i<s.length(); ++i){
+            if(arr[idx]==arr[i]){
+                table[i]=table[i-1]+1;
+                idx++;
+            }
+            else{
+                idx=table[i-1];
+                while(idx>0 && arr[idx]!=arr[i]){
+                    idx=table[idx-1];
+                }
+                if(arr[idx]==arr[i]){
+                    idx++;
+                }
+                table[i]=idx;
+            }
+        }
+        
+        return table;
+    }
+}
