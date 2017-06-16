@@ -1,0 +1,36 @@
+Java:
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head==null || head.next==null) return true;
+        
+        ListNode fast=head, slow=head;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        
+        if(fast!=null){
+            slow=slow.next;
+        }
+        
+        ListNode dummy=new ListNode(0);
+        ListNode pre=slow;
+        dummy.next=slow;
+        while(slow.next!=null){
+            pre=slow.next;
+            slow.next=pre.next;
+            pre.next=dummy.next;
+            dummy.next=pre;
+            
+        }
+        slow=dummy.next;
+        fast=head;
+        while(slow!=null){
+            if(fast.val!=slow.val) return false;
+            fast=fast.next;
+            slow=slow.next;
+        }
+        
+        return true;
+    }
+}
