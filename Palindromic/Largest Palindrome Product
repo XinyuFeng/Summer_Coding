@@ -1,0 +1,59 @@
+C++:
+class Solution {
+public:
+    int largestPalindrome(int n) {
+        if(n==1) return 9;
+        int upper=pow(10, n)-1;
+        int lower=pow(10, n-1);
+        for(int i=upper; i>=lower; --i){
+            long cand=buildP(i);
+            for(long j=upper; j*j>=cand; --j){
+                if(cand%j==0){
+                    return cand%1337;
+                }
+            }
+        }
+        return -1;
+    }
+    
+    long buildP(int n){
+        string s=to_string(n);
+        reverse(s.begin(), s.end());
+        return stol(to_string(n)+s);
+    }
+};
+
+Java:
+public class Solution {
+    public int largestPalindrome(int n) {
+        if(n==1) return 9;
+        
+        int upperbound=(int)Math.pow(10, n)-1, lowerbound=upperbound/10;
+        long maxnumber=(long)upperbound*(long)upperbound;
+        
+        int firsthalf=(int)(maxnumber/(long)Math.pow(10, n));
+        
+        boolean found=false;
+        long palindrom=0;
+        
+        while(!found){
+            palindrom=createP(firsthalf);
+            for(long i=upperbound; i>lowerbound; --i){
+                if(i*i<palindrom){
+                    break;
+                }
+                if(palindrom%i==0){
+                    found=true;
+                    break;
+                }
+            }
+            firsthalf--;
+        }
+        return (int)(palindrom%1337);
+    }
+    
+    public long createP(long num){
+        String str=num+new StringBuilder().append(num).reverse().toString();
+        return Long.parseLong(str);
+    }
+}
