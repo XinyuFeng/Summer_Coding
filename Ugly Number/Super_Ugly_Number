@@ -1,0 +1,19 @@
+Java:
+public class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] arr=new int[n];
+        arr[0]=1;
+        int[] idxArr=new int[primes.length];
+        for(int i=1; i<n; ++i){
+            arr[i]=Integer.MAX_VALUE;
+            for(int j=0; j<primes.length; ++j){
+                if(arr[i-1]==arr[idxArr[j]]*primes[j]){
+                    idxArr[j]++;
+                }
+                arr[i]=Math.min(arr[i], arr[idxArr[j]]*primes[j]);
+            }
+            
+        }
+        return arr[n-1];
+    }
+}
