@@ -1,0 +1,15 @@
+Java:
+public class Solution {
+    public int nthUglyNumber(int n) {
+        int[] arr=new int[n];
+        arr[0]=1;
+        int t1=0, t2=0, t3=0;
+        for(int i=1; i<n; ++i){
+            arr[i]=Math.min(arr[t1]*2, Math.min(arr[t2]*3, arr[t3]*5));
+            if(arr[i]==arr[t1]*2) t1++;
+            if(arr[i]==arr[t2]*3) t2++;
+            if(arr[i]==arr[t3]*5) t3++;
+        }
+        return arr[n-1];
+    }
+}
