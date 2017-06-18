@@ -1,0 +1,47 @@
+Java:
+public class Solution {
+    String[] map;
+    Set<String> set;
+    public boolean wordPatternMatch(String pattern, String str) {
+        map=new String[256];
+        set=new HashSet<>();
+        return helper(str, 0, pattern, 0);
+    }
+    
+    private boolean helper(String str, int i, String pattern, int j){
+        if(i==str.length() && j==pattern.length()) return true;
+        if(i==str.length() || j==pattern.length()) return false;
+        
+        char c=pattern.charAt(j);
+        if(map[c]!=null){
+            String s=map[c];
+            if(!str.startsWith(s, i)){
+                return false;
+            }
+            return helper(str, i+s.length(), pattern, j+1);
+        }
+        
+        int end=str.length()-1;
+        for(int l=pattern.length()-1; l>j; --l){
+            char c1=pattern.charAt(l);
+            if(map[c1]!=null){
+                end-=map[c1].length();
+            }
+            else{
+                end-=1;
+            }
+        }
+        
+        for(int k=i; k<=end; ++k){
+            String tmp= str.substring(i, k+1);
+            if(set.contains(tmp)) continue;
+            
+            map[c]=tmp;
+            set.add(tmp);
+            if(helper(str, k+1, pattern, j+1)) return true;
+            map[c]=null;
+            set.remove(tmp);
+        }
+        return false;
+    }
+}
