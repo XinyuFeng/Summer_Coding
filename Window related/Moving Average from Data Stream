@@ -1,0 +1,21 @@
+Java:
+public class MovingAverage {
+
+    private int[] arr;
+    int idx=0;
+    int sum=0;
+    int count=0;
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+        arr=new int[size];
+    }
+    
+    public double next(int val) {
+        if(count<arr.length) count++;
+        sum-=arr[idx];
+        arr[idx]=val;
+        sum+=val;
+        idx=(idx+1)%arr.length;
+        return (double) sum/count;
+    }
+}
