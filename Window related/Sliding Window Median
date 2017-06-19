@@ -1,0 +1,60 @@
+C++:
+class Solution {
+public:
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+        vector<double> medians;
+        multiset<int> lo, hi;
+        
+        for(int i=0; i<nums.size(); ++i){
+            if(i>=k){
+                if(nums[i-k]<=*lo.rbegin()){
+                    lo.erase(lo.find(nums[i-k]));
+                }
+                else{
+                    hi.erase(hi.find(nums[i-k]));
+                }
+            }
+            lo.insert(nums[i]);
+            hi.insert(*lo.rbegin());
+            lo.erase(prev(lo.end()));
+            
+            if(lo.size()<hi.size()){
+                lo.insert(*hi.begin());
+                hi.erase(hi.begin());
+            }
+            
+            if(i>=k-1){
+                medians.push_back(k&1? *lo.rbegin() : ((double)(*lo.rbegin())+(double)(*hi.begin()))*0.5);
+            }
+        }
+        return medians;
+    }
+};
+
+Java:
+public class Solution {
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        Comparator<Integer> comp=(a,b)->nums[a]!=nums[b]? Integer.compare(nums[a], nums[b]) : a-b;
+        TreeSet<Integer> left=new TreeSet<>(comp.reversed());
+        TreeSet<Integer> right=new TreeSet<>(comp);
+        
+        Supplier<Double> median=(k%2==0)?
+            ()->((double)nums[left.first()]+nums[right.first()])/2 :
+            ()->(double)nums[right.first()];
+            
+        Runnable balance=()->{while(left.size()>right.size()) right.add(left.pollFirst());};
+        
+        double[] result=new double[nums.length-k+1];
+        
+        for(int i=0; i<k; ++i) left.add(i);
+        balance.run(); result[0]=median.get();
+        
+        for(int i=k, r=1; i<nums.length; ++i, ++r){
+            if(!left.remove(i-k)) right.remove(i-k);
+            right.add(i); left.add(right.pollFirst());
+            balance.run();
+            result[r]=median.get();
+        }
+        return result;
+    }
+}
