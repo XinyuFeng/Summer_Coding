@@ -1,0 +1,51 @@
+Java:
+public class Solution {
+    public int[][] multiply(int[][] A, int[][] B) {
+        int m=A.length;
+        int n=A[0].length;
+        int nb=B[0].length;
+        int[][] ans=new int[m][nb];
+        
+        List[] LA=new List[m];
+        List[] LB=new List[n];
+        
+        for(int i=0; i<m; ++i){
+            List<Integer> curl=new ArrayList<>();
+            for(int j=0; j<n; ++j){
+                if(A[i][j]!=0){
+                    curl.add(j);
+                    curl.add(A[i][j]);
+                }
+            }
+            LA[i]=curl;
+        }
+        
+        for(int i=0; i<n; ++i){
+            List<Integer> curl=new ArrayList<>();
+            for(int j=0; j<nb; ++j){
+                if(B[i][j]!=0){
+                    curl.add(j);
+                    curl.add(B[i][j]);
+                }
+            }
+            LB[i]=curl;
+        }
+        
+        for(int i=0; i<m; ++i){
+            List<Integer> colA=LA[i];
+            for(int j=0; j<colA.size(); j+=2){
+                int posA=colA.get(j);
+                int valA=colA.get(j+1);
+                List<Integer> colB=LB[posA];
+                for(int k=0; k<colB.size(); k+=2){
+                    int posB=colB.get(k);
+                    int valB=colB.get(k+1);
+                    ans[i][posB]+=(valA*valB);
+                }
+            }
+        }
+        
+        return ans;
+        
+    }
+}
