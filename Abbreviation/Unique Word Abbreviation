@@ -1,0 +1,32 @@
+Java:
+public class ValidWordAbbr {
+
+    HashMap<String, String> T;
+    public ValidWordAbbr(String[] dictionary) {
+        T=new HashMap<>();
+        for(int i=0; i<dictionary.length; ++i){
+            String abb=getAbb(dictionary[i]);
+            if(!T.containsKey(abb)){
+                T.put(abb, dictionary[i]);
+            }
+            else{
+                if(!T.get(abb).equals(dictionary[i])){
+                    T.put(abb, "");
+                }
+            }
+            
+        }
+    }
+    
+    public String getAbb(String s){
+        int len=s.length();
+        if(len<=2) return s;
+        return ""+s.charAt(0)+s.charAt(len-1)+len;
+    }
+    
+    public boolean isUnique(String word) {
+        String abb=getAbb(word);
+        return !T.containsKey(abb) || T.get(abb).equals(word);
+        
+    }
+}
