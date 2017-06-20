@@ -1,0 +1,40 @@
+Java:
+public class Solution {
+    public String frequencySort(String s) {
+        int len=s.length();
+        List[] bucket=new List[len+1];
+        char[] arr=s.toCharArray();
+        int[] T=new int[256];
+        int count=0;
+        for(int i=0; i<len; ++i){
+            T[arr[i]]++;
+            count=T[arr[i]];
+            if(bucket[count]==null){
+                List<Character> list=new ArrayList<>();
+                bucket[count]=list;
+            }
+            bucket[count].add(arr[i]);
+        }
+        
+        HashSet<Character> set=new HashSet<>();
+        StringBuilder sb=new StringBuilder();
+        for(int i=len; i>=0; --i){
+            if(bucket[i]!=null){
+                List<Character> list=bucket[i];
+                for(int j=0; j<list.size(); ++j){
+                    char c=list.get(j);
+                    if(set.contains(c)) continue;
+                    set.add(c);
+                    int k=i;
+                    while(k-->0){
+                        sb.append(c);
+                    }
+                    
+                }
+            }
+            
+        }
+        
+        return sb.toString();
+    }
+}
