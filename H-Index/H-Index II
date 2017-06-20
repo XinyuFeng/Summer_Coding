@@ -1,0 +1,21 @@
+public class Solution {
+    public int hIndex(int[] citations) {
+        int len=citations.length;
+        int left=0, right=len-1;
+        if(len==0) return 0;
+        while(left<right){
+            int mid=(left+right)/2;
+            int count=len-mid;
+            if(count>citations[mid]){
+                left=mid+1;
+            }
+            else if(count==citations[mid]) return count;
+            else{
+                right=mid;
+            }
+        }
+        
+        int count=len-left;
+        return count<=citations[left]? count : 0;
+    }
+}
