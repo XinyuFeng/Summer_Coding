@@ -1,0 +1,16 @@
+Java:
+public class Solution {
+    public boolean isStrobogrammatic(String num) {
+        char[] T=new char[10];
+        T[0]='0'; T[1]='1'; T[2]='a'; T[3]='a'; T[4]='a'; T[5]='a'; T[6]='9'; T[7]='a';T[8]='8'; T[9]='6';
+        
+        int i=0, j=num.length()-1;
+        while(i<=j){
+            int idx=num.charAt(i)-'0';
+            if(T[idx]!=num.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
