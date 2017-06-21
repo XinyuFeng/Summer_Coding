@@ -1,0 +1,40 @@
+Java:
+public class Solution {
+    public List<String> wordsAbbreviation(List<String> dict) {
+        int len=dict.size();
+        int[] prefix=new int[len];
+        String[] ans=new String[len];
+        
+        for(int i=0; i<len; ++i){
+            prefix[i]=1;
+            ans[i]=abbr(dict.get(i), 1);
+        }
+        
+        HashSet<Integer> set=new HashSet<>();
+        for(int i=0; i<len; ++i){
+            while(true){
+                set.clear();
+                for(int j=i+1; j<len; ++j){
+                    if(ans[j].equals(ans[i])) set.add(j);
+                }
+                if(set.isEmpty()) break;
+                set.add(i);
+                for(int k: set){
+                    ans[k]=abbr(dict.get(k), ++prefix[k]);
+                }
+            }
+        }
+        
+        return Arrays.asList(ans);
+    }
+    
+    String abbr(String s, int k){
+        if(k+2>=s.length()) return s;
+        StringBuilder sb=new StringBuilder();
+        sb.append(s.substring(0, k));
+        sb.append(s.length()-k-1);
+        sb.append(s.charAt(s.length()-1));
+        return sb.toString();
+        
+    }
+}
