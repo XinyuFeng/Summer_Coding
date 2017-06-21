@@ -1,0 +1,23 @@
+Java:
+public class Solution {
+    public boolean validWordAbbreviation(String word, String abbr) {
+        int i=0, j=0;
+        while(i<abbr.length() && j<word.length()){
+            if(word.charAt(j)==abbr.charAt(i)){
+                i++;
+                j++;
+                continue;
+            }
+            if((abbr.charAt(i)<='0' || abbr.charAt(i)>'9')){
+                return false;
+            }
+            
+            int start=i;
+            while(i<abbr.length() && abbr.charAt(i)>='0' && abbr.charAt(i)<='9') ++i;
+            int num=Integer.valueOf(abbr.substring(start, i));
+            j+=num;
+        }
+        
+        return i==abbr.length() && j==word.length();
+    }
+}
