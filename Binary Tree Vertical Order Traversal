@@ -1,0 +1,40 @@
+Java:
+public class Solution {
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        Queue<TreeNode> nodeQ=new LinkedList<>();
+        Queue<Integer> colsQ=new LinkedList<>();
+        HashMap<Integer, List<Integer>>map=new HashMap<>();
+        if(root==null) return ans;
+        nodeQ.add(root);
+        colsQ.add(0);
+        int min=0, max=0;
+        while(!nodeQ.isEmpty()){
+            TreeNode node=nodeQ.poll();
+            int col=colsQ.poll();
+            
+            if(!map.containsKey(col)){
+                map.put(col, new ArrayList<Integer>());
+            }
+            map.get(col).add(node.val);
+            
+            if(node.left!=null){
+                min=Math.min(min, col-1);
+                nodeQ.add(node.left);
+                colsQ.add(col-1);
+            }
+            
+            if(node.right!=null){
+                max=Math.max(max, col+1);
+                nodeQ.add(node.right);
+                colsQ.add(col+1);
+            }
+            
+        }
+        
+        for(int i=min; i<=max; ++i){
+            ans.add(map.get(i));
+        }
+        return ans;
+    }
+}
