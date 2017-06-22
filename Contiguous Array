@@ -1,0 +1,28 @@
+Java:
+public class Solution {
+    public int findMaxLength(int[] nums) {
+        int ones=0, zeros=0;
+        Map<Integer, Integer> map=new HashMap<>();
+        int ans=0;
+        map.put(0, -1);
+        for(int i=0; i<nums.length; ++i){
+            if(nums[i]==0){
+                zeros++;
+            }
+            else{
+                ones++;
+            }
+            
+            if(map.containsKey(ones-zeros)){
+                ans=Math.max(ans, i-map.get(ones-zeros));
+            }
+            else{
+                map.put(ones-zeros, i);
+            }
+            
+            
+        }
+        
+        return ans;
+    }
+}
