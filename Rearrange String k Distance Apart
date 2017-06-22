@@ -1,0 +1,36 @@
+Java:
+public class Solution {
+    public String rearrangeString(String s, int k) {
+        int len=s.length();
+        int[] count=new int[26];
+        int[] valid=new int[26];
+        
+        char[] arr=s.toCharArray();
+        for(int i=0; i<len; ++i){
+            count[arr[i]-'a']++;
+        }
+        
+        StringBuilder sb=new StringBuilder();
+        for(int i=0; i<len; ++i){
+            int candPos=helper(count, valid, i);
+            if(candPos==-1) return "";
+            count[candPos]--;
+            valid[candPos]+=k;
+            sb.append((char)(candPos+'a'));
+        }
+        return sb.toString();
+    }
+    
+    int helper(int[] count, int[] valid, int pos){
+        int max=Integer.MIN_VALUE;
+        int idx=-1;
+        for(int i=0; i<26; ++i){
+            if(count[i]>0 && count[i]>max && pos>=valid[i]){
+                max=count[i];
+                idx=i;
+            }
+        }
+        
+        return idx;
+    }
+}
