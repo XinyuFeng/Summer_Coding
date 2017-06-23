@@ -1,0 +1,44 @@
+Java:
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA==null || headB==null) return null;
+        ListNode tmpA=headA;
+        ListNode tmpB=headB;
+        while(tmpA!=null && tmpB!=null){
+            if(tmpA.val==tmpB.val) return tmpA;
+            tmpA=tmpA.next;
+            tmpB=tmpB.next;
+            
+        }
+        
+        if(tmpA==null){
+            tmpA=headB;
+        }
+        else{
+            tmpB=headA;
+        }
+        
+        while(tmpA!=null && tmpB!=null){
+            tmpA=tmpA.next;
+            tmpB=tmpB.next;
+        }
+        
+        if(tmpA==null){
+            tmpA=headB;
+        }
+        else{
+            tmpB=headA;
+        }
+        
+        while(tmpA!=null && tmpB!=null){
+            if(tmpA.val==tmpB.val){
+                return tmpA;
+            }
+            tmpA=tmpA.next;
+            tmpB=tmpB.next;
+
+        }
+        return tmpA;
+        
+    }
+}
