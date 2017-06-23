@@ -1,0 +1,21 @@
+Java:
+public class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if(head==null) return head;
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode pre=dummy;
+        ListNode cur=head;
+        while(cur!=null){
+            if(cur.val!=val){
+                pre=pre.next;
+                pre.val=cur.val;
+                
+            }
+            cur=cur.next;
+        }
+        pre.next=null;
+        return dummy.next;
+        
+    }
+}
