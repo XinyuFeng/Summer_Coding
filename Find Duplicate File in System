@@ -1,0 +1,52 @@
+C++:
+class Solution {
+public:
+    vector<vector<string>> findDuplicate(vector<string>& paths) {
+        vector<vector<string>> ans;
+        unordered_map<string, vector<string>> T;
+        for(auto path: paths){
+            stringstream ss(path);
+            string root;
+            string s;
+            getline(ss, root, ' ');
+            while(getline(ss, s, ' ')){
+                string filename=s.substr(0, s.find('('));
+                string filecontent=s.substr(s.find('(')+1, s.find(')')-s.find('(')-1);
+                T[filecontent].push_back(root+'/'+filename);
+            }
+        }
+        for(auto n: T){
+            if(n.second.size()>1){
+                ans.push_back(n.second);
+            }
+        }
+        return ans;
+    }
+};
+
+Java:
+public class Solution {
+    public List<List<String>> findDuplicate(String[] paths) {
+        List<List<String>> ans=new ArrayList<>();
+        HashMap<String, List<String>> map=new HashMap<>();
+        for(String path: paths){
+            String[] arr=path.split(" ");
+            for(int i=1; i<arr.length; ++i){
+                String fileName=arr[i].substring(0, arr[i].indexOf('('));
+                String fileContent=arr[i].substring(arr[i].indexOf('(')+1, arr[i].indexOf(')'));
+                if(!map.containsKey(fileContent)){
+                    map.put(fileContent, new ArrayList<>());
+                }
+                map.get(fileContent).add(arr[0]+'/'+fileName);
+            }
+        }
+        
+        for(String content: map.keySet()){
+            if(map.get(content).size()>1){
+                ans.add(map.get(content));
+            }
+        }
+        
+        return ans;
+    }
+}
