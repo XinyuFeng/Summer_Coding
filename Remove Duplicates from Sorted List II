@@ -1,0 +1,25 @@
+Java:
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head==null || head.next==null) return head;
+        ListNode dummy=new ListNode(Integer.MIN_VALUE);
+        dummy.next=head;
+        ListNode pos=dummy;
+        ListNode cur=head;
+        ListNode pre=dummy;
+        while(cur.next!=null){
+            if(cur.val!=cur.next.val &&(pre==dummy || cur.val!=pre.val)){
+                pos.next=cur;
+                pos=pos.next;
+            }
+            pre=cur;
+            cur=cur.next;
+        }
+        if(pre.val!=cur.val){
+            pos.next=cur;
+            pos=pos.next;
+        }
+        pos.next=null;
+        return dummy.next;
+    }
+}
