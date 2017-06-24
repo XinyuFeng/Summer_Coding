@@ -1,0 +1,28 @@
+Java:
+public class Solution {
+    ListNode node;
+    public TreeNode sortedListToBST(ListNode head) {
+        if(head==null) return null;
+        int len=0;
+        ListNode cur=head;
+        while(cur!=null){
+            len++;
+            cur=cur.next;
+        }
+        node=head;
+        return helper(0, len-1, head);
+    }
+    
+    public TreeNode helper(int left, int right, ListNode tmp){
+        if(left>right) return null;
+        
+        int mid=left+(right-left)/2;
+        TreeNode l=helper(left, mid-1, node);
+        TreeNode root=new TreeNode(node.val);
+        root.left=l;
+        node=node.next;
+        root.right=helper(mid+1, right, node);
+        return root;
+        
+    }
+}
