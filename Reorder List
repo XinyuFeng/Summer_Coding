@@ -1,0 +1,50 @@
+Java:
+public class Solution {
+    public void reorderList(ListNode head) {
+        if(head==null || head.next==null || head.next.next==null) return;
+        ListNode slow=head;
+        ListNode fast=head;
+        ListNode pre=slow;
+        while(fast!=null && fast.next!=null){
+            pre=slow;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        
+        pre.next=null;
+        fast=reverse(slow);
+        slow=head;
+        ListNode dummy=new ListNode(0);
+        ListNode cur=dummy;
+        int count=0;
+        while(slow!=null){
+            if(count%2==0){
+                cur.next=slow;
+                slow=slow.next;
+            }
+            else{
+                cur.next=fast;
+                fast=fast.next;
+            }
+            cur=cur.next;
+            count++;
+        }
+        if(fast!=null);
+        cur.next=fast;
+        head=dummy.next;
+        
+    }
+    
+    public ListNode reverse(ListNode root){
+        if(root==null || root.next==null) return root;
+        ListNode cur=root.next;
+        ListNode pre=root;
+        while(cur!=null){
+            pre.next=cur.next;
+            cur.next=root;
+            root=cur;
+            cur=pre.next;
+        }
+        return root;
+    }
+}
