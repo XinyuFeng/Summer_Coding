@@ -1,0 +1,14 @@
+Java:
+public class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int lx=Math.max(A, E);
+        int rx=Math.min(C, G);
+        int ly=Math.max(B, F);
+        int ry=Math.min(D, H);
+        int S1=(C-A)*(D-B);
+        int S2=(G-E)*(H-F);
+        int rect=(rx-lx)*(ry-ly);
+        if(rx<lx || ry<ly) rect=0;
+        return S1+S2-rect;
+    }
+}
