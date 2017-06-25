@@ -1,0 +1,16 @@
+Java:
+public class Solution {
+    public int reverse(int x) {
+        boolean minus=(x<0)? true : false;
+        long num=Math.abs((long)x);
+        String s=""+num;
+        StringBuilder sb=new StringBuilder(s).reverse();
+        if(minus==true){
+            sb.insert(0, '-');
+        }
+        String ans=sb.toString();
+        if(Long.valueOf(ans)>Integer.MAX_VALUE|| Long.valueOf(ans)<Integer.MIN_VALUE) return 0;
+        return Integer.valueOf(ans);
+        
+    }
+}
