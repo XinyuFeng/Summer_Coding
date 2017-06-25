@@ -1,0 +1,26 @@
+Java:
+public class Solution {
+    public int romanToInt(String s) {
+        int[] T=new int[256];
+        T['I']=1;
+        T['V']=5;
+        T['X']=10;
+        T['L']=50;
+        T['C']=100;
+        T['D']=500;
+        T['M']=1000;
+        
+        char[] arr=s.toCharArray();
+        int n=s.length();
+        int sum=T[arr[n-1]];
+        for(int i=n-2; i>=0; --i){
+            if(T[arr[i]]<T[arr[i+1]]){
+                sum-=T[arr[i]];
+            }
+            else{
+                sum+=T[arr[i]];
+            }
+        }
+        return sum;
+    }
+}
