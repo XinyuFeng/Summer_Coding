@@ -1,0 +1,32 @@
+Java:
+public class Solution {
+    public int countDigitOne(int n) {
+        if(n<=0) return 0;
+        if(n<10) return 1;
+        long mask=1;
+        while(mask<=n){
+            mask*=10;
+        }
+        mask/=10;
+        long len=mask;
+        long ans=0;
+        while(mask>0){
+            long digit=(n/mask)%10;
+            long left=n%mask;
+            long right=n/(mask*10);
+            
+            if(digit==0){
+                ans+=(right)*mask;
+            }
+            else if(digit==1){
+                ans+=(right)*mask;
+                ans+=(left+1);
+            }
+            else{
+                ans+=(right+1)*mask;
+            }
+            mask/=10;
+        }
+        return (int)ans;
+    }
+}
