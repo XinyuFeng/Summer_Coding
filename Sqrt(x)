@@ -1,0 +1,18 @@
+Java:
+public class Solution {
+    public int mySqrt(int x) {
+        if(x==0) return 0;
+        int bit=0;
+        while((long)(1<<bit)*(long)(1<<bit)<=x) bit++;
+        bit--;
+        int ans=(1<<bit);
+        bit--;
+        while(bit>=0){
+            if((long)(ans|(1<<bit))*(long)(ans|(1<<bit))<=x){
+                ans|=(1<<bit);
+            }
+            bit--;
+        }
+        return ans;
+    }
+}
