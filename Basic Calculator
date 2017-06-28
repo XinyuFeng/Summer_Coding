@@ -1,0 +1,43 @@
+Java:
+public class Solution {
+    public int calculate(String s) {
+        int sum=0;
+        int sign=1;
+        char[] arr=s.toCharArray();
+        int idx=0;
+        Stack<Integer> stack=new Stack<>();
+        while(idx<s.length()){
+            if(arr[idx]==' '){
+                idx++;
+                continue;
+            }
+            else if(arr[idx]>='0'&&arr[idx]<='9'){
+                int num=0;
+                while(idx<s.length() && arr[idx]>='0'&&arr[idx]<='9'){
+                    num=num*10+arr[idx]-'0';
+                    idx++;
+                }
+                sum+=(sign*num);
+            }
+            else if(arr[idx]=='-' || arr[idx]=='+'){
+                sign=arr[idx]=='-'? -1 : 1;
+                idx++;
+            }
+            else if(arr[idx]=='('){
+                stack.push(sum);
+                stack.push(sign);
+                sum=0;
+                sign=1;
+                idx++;
+            }
+            else if(arr[idx]==')'){
+                sign=stack.peek();
+                stack.pop();
+                sum=(stack.peek()+sign*sum);
+                stack.pop();
+                idx++;
+            }
+        }
+        return sum;
+    }
+}
