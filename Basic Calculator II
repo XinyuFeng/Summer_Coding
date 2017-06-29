@@ -1,0 +1,43 @@
+Java:
+public class Solution {
+    public int calculate(String s) {
+        s=s+'+';
+        char[] arr=s.toCharArray();
+        int ans=0;
+        int curSum=0;
+        char op='+';
+        int idx=0;
+        while(idx<s.length()){
+            if(arr[idx]==' '){
+                idx++;
+                continue;
+            }
+            if(Character.isDigit(arr[idx])){
+                int tmp=0;
+                while(idx<s.length() && Character.isDigit(arr[idx])){
+                    tmp=tmp*10+arr[idx]-'0';
+                    idx++;
+                }
+                switch(op){
+                    case '+':
+                        curSum+=tmp; break;
+                    case '-':
+                        curSum-=tmp; break;
+                    case '*':
+                        curSum*=tmp; break;
+                    case '/':
+                        curSum/=tmp; break;
+                }
+            }
+            else{
+                if(arr[idx]=='+' || arr[idx]=='-'){
+                    ans+=curSum;
+                    curSum=0;
+                }
+                op=arr[idx++];
+            }
+        }
+        return ans+curSum;
+    }
+    
+}
