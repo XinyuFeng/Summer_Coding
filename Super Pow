@@ -1,0 +1,23 @@
+Java:
+public class Solution {
+    public int superPow(int a, int[] b) {
+        if(b.length==0) return 1;
+        return Pow(a, b, b.length, 1337);
+    }
+    
+    int Pow(int a, int[] b, int len, int k){
+        if(len==1){
+            return helper(a, b[0], k);
+        }
+        return helper(Pow(a, b, len-1, k),10, k)*helper(a, b[len-1], k)%k;
+    }
+    
+    int helper(int a, int b, int k){
+        int ans=1;
+        a%=k;
+        for(int i=0; i<b; ++i){
+            ans=ans*a%k;
+        }
+        return ans;
+    }
+}
