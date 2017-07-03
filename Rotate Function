@@ -1,0 +1,19 @@
+Java:
+public class Solution {
+    public int maxRotateFunction(int[] A) {
+        int S=0;
+        int len=A.length;
+        int F=0;
+        for(int i=0; i<len; ++i){
+            F+=i*A[i];
+            S+=A[i];
+        }
+        
+        int ans=F;
+        for(int i=len-1; i>=1; --i){
+            F=F+S-len*A[i];
+            ans=Math.max(ans, F);
+        }
+        return ans;
+    }
+}
