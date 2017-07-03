@@ -1,0 +1,19 @@
+Java:
+public class Solution {
+    public boolean isPerfectSquare(int num) {
+        if(num==1) return true;
+        int left=1, right=num;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            long S=(long)mid*mid;
+            if(S==(long)num) return true;
+            else if(S>(long)num){
+                right=mid;
+            }
+            else{
+                left=mid+1;
+            }
+        }
+        return false;
+    }
+}
