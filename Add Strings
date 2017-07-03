@@ -1,0 +1,37 @@
+Java:
+public class Solution {
+    public String addStrings(String num1, String num2) {
+        int idx1=num1.length()-1;
+        int idx2=num2.length()-1;
+        char[] arr1=num1.toCharArray();
+        char[] arr2=num2.toCharArray();
+        int res=0;
+        int sum=0;
+        StringBuilder sb=new StringBuilder();
+        while(idx1>=0 || idx2>=0 || res>0){
+            if(idx1>=0 && idx2>=0){
+                sum=res+arr1[idx1]+arr2[idx2]-'0'-'0';
+                idx1--;
+                idx2--;
+            }
+            else if(idx1>=0){
+                sum=res+arr1[idx1]-'0';
+                 idx1--;
+            }
+            else if(idx2>=0){
+                sum=res+arr2[idx2]-'0';
+                idx2--;
+            }
+            else{
+                sb.insert(0, res);
+                break;
+            }
+            res=sum/10;
+            sb.insert(0, sum%10);
+        }
+        
+        
+        return sb.toString();
+        
+    }
+}
