@@ -1,0 +1,41 @@
+Java:
+public class Solution {
+    public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+        int len = nums.length;
+        int idx = a > 0 ? len - 1 : 0;
+        
+        int i = 0, j = len - 1;
+        int[] ans = new int[len];
+        while (i <= j) {
+            int val1 = calc(nums[i], a, b, c);
+            int val2 = calc(nums[j], a, b, c);
+            if (a > 0) {
+                if (val1 > val2) {
+                    ans[idx--] = val1;
+                    i++;
+                }
+                else {
+                    ans[idx--] = val2;
+                    j--;
+                }
+            }
+            else {
+                if ( val1 > val2) {
+                    ans[idx++] = val2;
+                    j--;
+                }
+                else {
+                    ans[idx++] = val1;
+                    i++;
+                }
+            }
+            
+        }
+        return ans;
+        
+    }
+    
+    public int calc(int x, int a, int b, int c) {
+        return a * x * x + b * x + c;
+    }
+}
