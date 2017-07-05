@@ -1,0 +1,26 @@
+Java:
+public class Solution {
+    public String smallestGoodBase(String n) {
+        long N = 0;
+        for(char c : n.toCharArray()){
+            N = N * 10 + c - '0';
+        }
+        if(N == 1) return "1";
+        
+        int maxLen = (int)(Math.log(N) / Math.log(2));
+        for(int i = maxLen; i >= 2; -- i){
+            long base = (int)Math.pow(N, 1.0 / i);
+            //long sum = (long)((Math.pow(base, i+1) - 1) / ((double)base - 1));
+            long sum = 1, multi = base;
+            for(int j = 0; j < i; ++ j) {
+                sum += multi;
+                multi *= base;
+            }
+            if (sum == N) {
+                return String.valueOf(base);
+            }
+        }
+        
+        return String.valueOf(N-1);
+    }
+}
