@@ -1,0 +1,15 @@
+Java:
+public class Solution {
+    public String complexNumberMultiply(String a, String b) {
+        String[] arrA = a.split("\\+");
+        String[] arrB = b.split("\\+");
+        int A_0 = Integer.valueOf(arrA[0]);
+        int A_1 = Integer.valueOf(arrA[1].substring(0, arrA[1].length()-1));
+        int B_0 = Integer.valueOf(arrB[0]);
+        int B_1 = Integer.valueOf(arrB[1].substring(0, arrB[1].length()-1));
+        
+        int F_0 = A_0 * B_0 - A_1 * B_1;
+        int F_1 = A_0 * B_1 + A_1 * B_0;
+        return "" + F_0 + "+" + F_1 + "i";
+    }
+}
