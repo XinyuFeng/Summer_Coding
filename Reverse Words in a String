@@ -1,0 +1,46 @@
+Java:
+public class Solution {
+    public String reverseWords(String s) {
+        if (s == null) return null;
+        int len = s.length();
+        char[] arr = s.toCharArray();
+        reverse(arr, 0, len - 1);
+        reverseWord(arr);
+        return cleanString(arr);
+    }
+    
+    public void reverseWord(char[] arr) {
+        int idx = 0;
+        while (idx < arr.length) {
+            while (idx < arr.length && arr[idx] == ' ') idx ++;
+            int end = idx;
+            while (end < arr.length && arr[end] != ' ') end ++;
+            reverse(arr, idx, end-1);
+            idx = end + 1;
+        }
+    }
+    
+    public String cleanString(char[] arr) {
+        int idx = 0;
+        int cur = 0;
+        while (cur < arr.length) {
+            while (cur < arr.length && arr[cur] == ' ') cur ++;
+            while (cur < arr.length && arr[cur] != ' ') arr[idx++] = arr[cur++];
+            while (cur < arr.length && arr[cur] == ' ') cur ++;
+            if (cur < arr.length) arr[idx++] = ' ';
+        }
+        return new String(arr).substring(0, idx);
+    }
+    
+    public void reverse(char[] arr, int i, int j) {
+        if (i >= j) return;
+        if (j == arr.length) j --;
+        while (i < j) {
+            char c = arr[i];
+            arr[i] = arr[j];
+            arr[j] = c;
+            i ++;
+            j --;
+        }
+    }
+}
