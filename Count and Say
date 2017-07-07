@@ -1,0 +1,25 @@
+Java:
+public class Solution {
+    public String countAndSay(int n) {
+        if (n < 1) return "";
+        StringBuilder sb = new StringBuilder("1");
+        while (--n > 0) {
+            String tmp = sb.toString();
+            sb = new StringBuilder();
+            int idx = 0;
+            while (idx < tmp.length()) {
+                char val = tmp.charAt(idx);
+                int count = 0;
+                while (idx < tmp.length() && tmp.charAt(idx) == val) {
+                    count++;
+                    idx++;
+                }
+                sb.append(count);
+                sb.append(val);
+            }
+            
+        }
+        return sb.toString();
+        
+    }
+}
