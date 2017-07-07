@@ -1,0 +1,21 @@
+Java:
+public class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] T = new int[256];
+        for (char c : tasks) {
+            T[c] ++;
+        }
+        int maxT = 0;
+        for (int i = 0; i < 256; ++ i) {
+            maxT = Math.max(maxT, T[i]);
+        }
+        int countMax = 0;
+        for (int i = 0; i < 256; ++ i) {
+            if (T[i] == maxT) {
+                countMax ++;
+            }
+        }
+        
+        return Math.max(tasks.length, (maxT - 1) * (n + 1) + countMax);
+    }
+}
