@@ -1,0 +1,26 @@
+Java:
+public class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows == 1) return s;
+        StringBuilder sb = new StringBuilder();
+        int dist = numRows * 2 - 2;
+        int len = dist, idx = 0;
+        while(len >= 0) {
+            int savIdx = idx;
+            int savLen = len;
+            while (idx < s.length()) {
+                sb.append(s.charAt(idx));
+                idx += len == 0 ? dist - len : len;
+                if (len < dist) {
+                    len = dist - len;
+                }
+            }
+            idx = savIdx + 1;
+            len = savLen;
+            len -= 2;
+
+        }
+        
+        return sb.toString();
+    }
+}
