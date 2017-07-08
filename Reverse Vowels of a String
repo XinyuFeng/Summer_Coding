@@ -1,0 +1,28 @@
+Java:
+public class Solution {
+    public String reverseVowels(String s) {
+        int len = s.length();
+        int left = 0, right = len - 1;
+        char[] arr = s.toCharArray();
+        while (left < right) {
+            while(left < right && !isVowel(s, left)) left++;
+            while(left < right && !isVowel(s, right)) right--;
+            if (left < right)
+                swap(arr, left, right);
+            left++;
+            right--;
+        }
+        return new String(arr);
+    }
+    
+    boolean isVowel(String s, int idx) {
+        char c = s.charAt(idx);
+        return c == 'i' || c == 'e' || c == 'o' || c == 'u' || c == 'a' || c == 'I' || c == 'E' || c == 'U' || c == 'O' || c == 'A';
+    }
+    
+    void swap(char[] arr, int left, int right) {
+        char tmp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = tmp;
+    }
+}
