@@ -1,0 +1,18 @@
+Java:
+public class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] map = new int[128];
+        int count = 0;
+        for (char c : ransomNote.toCharArray()) {
+            if (map[c] == 0) count++;
+            map[c]++;
+        }
+        
+        for (char c : magazine.toCharArray()) {
+            map[c]--;
+            if (map[c] == 0) count--;
+        }
+        
+        return count == 0;
+    }
+}
