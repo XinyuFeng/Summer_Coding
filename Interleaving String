@@ -1,0 +1,35 @@
+Java:
+public class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int len1 = s1.length();
+        int len2 = s2.length();
+        int len3 = s3.length();
+        if (len3 != len1 + len2) return false;
+        boolean[] dp = new boolean[len1+1];
+        dp[0] = true;
+        
+        for (int i = 1; i <= len1; ++i) {
+            dp[i] = dp[i-1] && (s1.charAt(i-1) == s3.charAt(i-1));
+        }
+        
+
+        for (int j = 1; j <= len2; ++j) {
+            dp[0] &= (s2.charAt(j-1) == s3.charAt(j-1));
+            for (int i = 1; i <= len1; ++i) {
+                boolean tmp = dp[i];
+                dp[i] = false;
+                if (s1.charAt(i-1) == s3.charAt(i+j-1)) {
+                    dp[i] |= dp[i-1];
+                }
+                
+                if (s2.charAt(j-1) == s3.charAt(i+j-1)) {
+                    dp[i] |= tmp;
+                }
+                
+            }
+        }
+        return dp[len1];
+        
+        
+    }
+}
