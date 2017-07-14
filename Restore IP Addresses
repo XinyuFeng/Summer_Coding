@@ -1,0 +1,31 @@
+Java:
+public class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        dfs(s, ans, sb, 0, 0);
+        return ans;
+    }
+    
+    private void dfs(String s, List<String> ans, StringBuilder sb, int pos, int count) {
+        if (pos == s.length() && count == 4) {
+            ans.add(sb.toString());
+            return;
+        }
+        
+        if (count >= 4) return;
+    
+        int len = sb.length();
+        for (int i = pos; i <= pos + 2 && i < s.length(); ++i) {
+            String tmp = s.substring(pos, i+1);
+            if (Integer.valueOf(tmp) <= 255 && (i == pos || tmp.charAt(0) != '0')) {
+                sb.append(tmp);
+                if (count < 3)
+                    sb.append('.');
+                dfs(s, ans, sb, i+1, count+1);
+                sb.setLength(len);
+            }
+        }
+        
+    }
+}
