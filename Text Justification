@@ -1,0 +1,61 @@
+Java:
+public class Solution {
+    public List<String> fullJustify(String[] words, int L) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        
+        int curLen = 0;
+        int pos = 0;
+        for (int i = 0; i < words.length; ++i) {
+            if (curLen + words[i].length() + i - pos > L) {
+                int spaceNum = i - 1 - pos;
+                int avg = (spaceNum == 0 ? L - words[pos].length() : (L - curLen) / spaceNum);
+                int res = (spaceNum == 0 ? 0 : (L - curLen) % spaceNum);
+                while (pos < i) {
+                    sb.append(words[pos]);
+                    if (pos < i - 1) {
+                        int tmpAvg = avg;
+                        while (tmpAvg > 0) {
+                            sb.append(' ');
+                            tmpAvg--;
+                        }
+                        if (res > 0) {
+                            sb.append(' ');
+                            res--;
+                        }
+                    }
+                    else if (spaceNum == 0) {
+                        while (avg-- > 0) {
+                            sb.append(' ');
+                        }
+                    }
+                    pos++;
+                }
+                ans.add(sb.toString());
+                sb = new StringBuilder();
+                curLen = words[i].length();
+                pos = i;
+                
+            }
+            else {
+                curLen += words[i].length();
+            }
+            
+            if (i == words.length - 1) {
+                while (pos < i) {
+                    sb.append(words[pos] + ' ');
+                    pos++;
+                }
+                
+                sb.append(words[pos]);
+                int res = L - sb.length();
+                while (res-- > 0) {
+                    sb.append(' ');
+                }
+                ans.add(sb.toString());
+            }
+        }
+        
+        return ans;
+    }
+}
