@@ -1,0 +1,57 @@
+Java:
+public class Solution {
+    public boolean isValidTagName(String s) {
+        if (s.length() < 1 || s.length() > 9) return false;
+        for (int i = 0; i < s.length(); ++i) {
+            if (!Character.isUpperCase(s.charAt(i))) return false;
+        }
+        return true;
+    }
+    
+    public boolean isValidCData(String s) {
+        return s.indexOf("[CDATA[") == 0;
+    }
+    
+    public boolean isValid(String code) {
+        if (code.isEmpty() || code.charAt(0) != '<' || code.charAt(code.length() - 1) != '>')
+            return false;
+        Stack <String> stack = new Stack<>();
+        boolean contains_tag = false;
+        
+        for (int i = 0; i < code.length(); ++i) {
+            boolean ending = false;
+            int closeidx;
+            if (stack.isEmpty() && contains_tag) return false;
+            if (code.charAt(i) == '<') {
+                if (!stack.isEmpty() && code.charAt(i + 1) == '!') {//CData
+                    closeidx = code.indexOf("]]>", i + 1);
+                    if (closeidx < 0 || !isValidCData(code.substring(i + 2, closeidx)))
+                        return false;
+                }
+                else {
+                    if (code.charAt(i + 1) == '/') {//ending
+                        i++;
+                        ending = true;//mark
+                    }
+                    closeidx = code.indexOf('>', i + 1);
+                    String name = code.substring(i + 1, closeidx);
+                    if (closeidx < 0 || !isValidTagName(name))//check name
+                        return false;
+                    if (ending) {
+                        if (!stack.empty() && stack.peek().equals(name))//stack
+                            stack.pop();
+                        else
+                            return false;
+                    }
+                    else {//tag begin
+                        contains_tag = true;
+                        stack.push(name);
+                    }
+                }
+                i = closeidx;
+            }
+        }
+        
+        return stack.isEmpty() && contains_tag;
+    }
+}
