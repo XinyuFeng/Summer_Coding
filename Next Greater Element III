@@ -1,0 +1,24 @@
+Java:
+public class Solution {
+    public int nextGreaterElement(int n) {
+        char[] arr= ("" + n).toCharArray();
+        int len = arr.length;
+        int i = len-1;
+        for(; i > 0; i--) {
+            if (arr[i-1] < arr[i]) break;
+        }
+        if (i == 0) return -1;
+        i = i - 1;
+        int j = len - 1;
+        for (; j > i; --j) {
+            if (arr[j] > arr[i]) break;
+        }
+        
+        char tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        Arrays.sort(arr, i + 1, len);
+        long val = Long.valueOf(new String(arr));
+        return (val <= Integer.MAX_VALUE) ? (int) val : -1;
+    }
+}
