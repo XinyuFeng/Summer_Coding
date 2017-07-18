@@ -1,0 +1,18 @@
+Java:
+public class Solution {
+    public String tree2str(TreeNode t) {
+        if (t == null) return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(t.val);
+        String l = tree2str(t.left);
+        String r = tree2str(t.right);
+        if (!r.equals("")) {
+            sb.append('(').append(l).append(")(").append(r).append(')');
+        }
+        else if (!l.equals("")) {
+            sb.append('(').append(l).append(')');
+        }
+        
+        return sb.toString();
+    } 
+}
