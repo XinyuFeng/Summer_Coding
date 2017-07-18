@@ -1,0 +1,25 @@
+Java:
+public class Solution {
+    public boolean detectCapitalUse(String word) {
+        if (isCapAll(word)) return true;
+        if (isLowAll(word)) return true;
+        if (isCapAll(word.substring(0, 1)) && isLowAll(word.substring(1))) return true;
+        return false;
+    }
+            
+    boolean isCapAll(String word) {
+        for (char c : word.toCharArray()) {
+            if (c < 'A' || c > 'Z') return false;
+        }
+        return true;
+    }
+    
+    boolean isLowAll(String word) {
+        for (char c : word.toCharArray()) {
+            if (c < 'a' || c > 'z') return false;
+        }
+        
+        return true;
+    }
+    
+}
