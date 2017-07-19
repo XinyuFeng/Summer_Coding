@@ -1,0 +1,15 @@
+Java;
+public class Solution {
+    public boolean checkRecord(String s) {
+        char[] arr = s.toCharArray();
+        boolean findA = false;
+        for (int i = 0; i < s.length(); ++i) {
+            if (arr[i] == 'A') {
+                if (findA) return false;
+                findA = true;
+            }
+            else if (i >= 2 && arr[i] == 'L' && arr[i-1] == 'L' && arr[i-2] == 'L') return false;
+        }
+        return true;
+    }
+}
