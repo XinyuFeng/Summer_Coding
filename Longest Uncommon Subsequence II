@@ -1,0 +1,34 @@
+Java:
+public class Solution {
+    boolean isSubsequence(String a, String b) {
+        int j = 0;
+        for (int i = 0; i < b.length() && j < a.length(); ++i) {
+            if (b.charAt(i) == a.charAt(j)) {
+                j++;
+            }
+        }
+        return j == a.length();
+    }
+    
+    public int findLUSlength(String[] strs) {
+        Arrays.sort(strs, new Comparator<String>(){
+            public int compare(String s1, String s2) {
+                return s2.length() - s1.length();
+            }
+        });
+        
+        for (int i = 0; i < strs.length; ++i) {
+            boolean flag = false;
+            for (int j = 0; j < strs.length; ++j) {
+                if (i == j) continue;
+                if (isSubsequence(strs[i], strs[j])) {
+                    flag = true;
+                    continue;
+                } 
+            }
+            if (flag == false) return strs[i].length();
+        }
+        
+        return -1;
+    }
+}
