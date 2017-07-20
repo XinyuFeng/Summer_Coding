@@ -1,0 +1,31 @@
+Java:
+public class Solution {
+    Map<Integer, List<String>> map = new HashMap<>();
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> dict = new HashSet<>(wordDict);
+        
+        return helper(s, dict, 0);
+    }
+    
+    List<String> helper(String s, Set<String> dict, int idx) {
+        if (map.containsKey(idx)) return map.get(idx);
+        List<String> ans = new ArrayList<>();
+        if (idx == s.length()) {
+            ans.add("");
+            return ans;
+        }
+        
+        for (int i = idx + 1; i <= s.length(); ++i) {
+            if (dict.contains(s.substring(idx, i))) {
+                List<String> list = helper(s, dict, i);
+                for (String l : list) {
+                    ans.add(s.substring(idx, i) + (l.equals("") ? "" : " ") + l);
+                }
+            }
+        }
+        map.put(idx, ans);
+        return ans;
+        
+        
+    }
+}
