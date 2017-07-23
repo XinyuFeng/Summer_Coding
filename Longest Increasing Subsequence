@@ -1,0 +1,33 @@
+Java:
+public class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[] arr = new int[nums.length];
+        int top = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            int idx = find(arr, nums[i], top);
+            if (idx == -1) {
+                arr[top] = nums[i];
+                top ++;
+            }
+            else {
+                arr[idx] = nums[i];
+            }
+        }
+        return top;
+    }
+    
+    int find(int[] arr, int val, int top) {
+        int left = 0, right = top - 1;
+        if (top == 0) return -1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == val) return mid;
+            else if (arr[mid] > val) right = mid;
+            else {
+                left = mid + 1;
+            }
+        }
+        
+        return arr[left] >= val ? left : -1;
+    }
+}
