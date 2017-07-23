@@ -1,0 +1,32 @@
+Java:
+public class Solution {
+    int getVal(int[] nums, int idx) {
+        if (idx < 0 || idx >= nums.length) {
+            return 1;
+        }
+        return nums[idx];
+    }
+    public int maxCoins(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int[][] dp = new int[nums.length][nums.length];
+        
+        for (int len = 1; len <= nums.length; ++len) {
+            for (int start = 0; start <= nums.length - len; ++start) {
+                int end = start + len - 1;
+                for (int i = start; i <= end; ++i) {
+                    int coin = getVal(nums, start - 1) * nums[i] * getVal(nums, end + 1);
+                    if (i != start) {
+                        coin += dp[start][i - 1];
+                    }
+                    if (i != end) {
+                        coin += dp[i + 1][end];
+                    }
+                    dp[start][end] = Math.max(dp[start][end], coin);
+                }
+                
+            }
+        }
+        
+        return dp[0][nums.length - 1];
+    }
+}
