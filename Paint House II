@@ -1,0 +1,36 @@
+public class Solution {
+    public int minCostII(int[][] costs) {
+        if (costs == null || costs.length == 0) return 0;
+        int n = costs.length;
+        int k = costs[0].length;
+        int idx1 = -1, idx2 = -1, m1 = Integer.MAX_VALUE, m2 = Integer.MAX_VALUE;
+        
+        for (int i = 0; i < n; ++i) {
+            int last1 = idx1, last2 = idx2;
+            int tmp1 = m1, tmp2 = m2;
+            idx1 = -1; idx2 = -1;
+            for (int j = 0; j < k; ++j) {
+                int S = 0;
+                if (j != last1) {
+                    S = (last1 < 0 ? 0 : tmp1) + costs[i][j];
+                }
+                else {
+                    S = (last2 < 0 ? 0 : tmp2) + costs[i][j];
+                }
+                
+                if (idx1 == -1 || S < m1) {
+                    idx2 = idx1;
+                    m2 = m1;
+                    idx1 = j;
+                    m1 = S;
+                }
+                else if (idx2 == -1 || S < m2) {
+                    idx2 = j;
+                    m2 = S;
+                }
+            }
+        }
+        
+        return m1;
+    }
+}
