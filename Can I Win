@@ -1,0 +1,35 @@
+public class Solution {
+    //Map<String, Boolean> map;
+    //boolean[] used;
+    int[] dp;
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        int sum = (1 + maxChoosableInteger) * maxChoosableInteger / 2;
+        if (sum < desiredTotal) return false;
+        if (desiredTotal == 0) return true;
+         //map = new HashMap();
+         //used = new boolean[maxChoosableInteger + 1];
+        dp = new int[1<<(maxChoosableInteger + 1)];
+        Arrays.fill(dp, -1);
+        return dfs(0, desiredTotal, maxChoosableInteger);
+    }
+    
+    private boolean dfs(int state, int desiredTotal, int pool) {
+        if (desiredTotal <= 0) return false;
+        //String key = Arrays.toString(used);
+        if (dp[state] != -1) return dp[state] == 1;
+        for (int i = 1; i <= pool; ++i) {
+            if ((state & (1<<i)) == 0) {
+                state ^= (1<<i);
+                if (!dfs(state, desiredTotal - i, pool)) {
+                    state ^= (1<<i);
+                    dp[state] = 1;
+                    return true;
+                }
+                state ^= (1<<i);
+            }
+        }
+        dp[state] = 0;
+        return false;
+        
+    }
+}
