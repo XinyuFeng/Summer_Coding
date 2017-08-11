@@ -1,0 +1,49 @@
+public class Solution {
+    public List<Integer> cheapestJump(int[] A, int B) {
+        List<Integer> ans = new ArrayList<>();
+        int[] next = new int[A.length];
+        Arrays.fill(next, -1);
+        next[A.length - 1] = A.length;
+        long[] cache = new long[A.length];
+        //helper(A, B, 0, next, cache);
+        for (int i = A.length - 2; i >= 0; --i) {
+            long cost = Integer.MAX_VALUE;
+            for (int j = i + 1; j <= i + B && j < A.length; ++j) {
+                long tmp = A[i] + cache[j];
+                if (tmp < cost) {
+                    cost = tmp;
+                    next[i] = j;
+                }
+            }
+            cache[i] = cost;
+        }
+        
+        int i;
+        for (i = 0; i < A.length && next[i] >= 0; i = next[i]) {
+            ans.add(i + 1);
+        }
+        if (i == A.length) return ans;
+        return new ArrayList<Integer>();
+    }
+    
+    public long helper(int[] A, int B, int idx, int[] next, long[] cache) {
+        if (cache[idx] > 0) return cache[idx];
+        if (idx == A.length - 1 && A[idx] >=0) {
+            cache[idx] = A[idx];
+            return cache[idx];
+        }
+        
+        long cost = Integer.MAX_VALUE;
+        for (int i = idx + 1; i <= idx + B && i < A.length; ++i) {
+            if (A[i] >= 0) {
+                long tmp = A[idx] + helper(A, B, i, next, cache);
+                if (tmp < cost) {
+                    cost = tmp;
+                    next[idx] = i;
+                }
+            }
+        }
+        cache[idx] = cost;
+        return cache[idx];
+    }
+}
