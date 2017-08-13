@@ -1,0 +1,30 @@
+public class Solution {
+    public int maxVacationDays(int[][] flights, int[][] days) {
+        if (flights == null || days == null || flights.length == 0 || days.length == 0) return 0;
+        int n = days.length;
+        int k = days[0].length;
+        int[] dp = new int[n + 1];
+        boolean[] check = new boolean[n + 1];
+        //Arrays.fill(check, true);
+        check[1] = true;
+        int ans = 0;
+        for (int i = 1; i <= k; ++i) {
+            int[] tmp = new int[n + 1];
+            for (int j = 1; j <= n; ++j) {
+                if (check[j])
+                    tmp[j] = dp[j] + days[j - 1][i - 1];//stay here, no move
+                for (int l = 1; l <= n; ++l) {
+                    if (flights[l - 1][j - 1] == 1 && check[l]) {
+                        tmp[j] = Math.max(tmp[j], dp[l] + days[j - 1][i - 1]);
+                        check[j] = true;
+                    }
+                }
+                if (i == k) {
+                    ans = Math.max(ans, tmp[j]);
+                }
+            }
+            dp = tmp;
+        }
+        return ans;
+    }
+}
