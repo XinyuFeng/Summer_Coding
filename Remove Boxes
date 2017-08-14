@@ -1,0 +1,40 @@
+public class Solution {
+    public int removeBoxes(int[] boxes) {
+        int n = boxes.length;
+        int[][][] dp = new int[n][n][n];
+        //return helper(boxes, dp, 0, n - 1, 0);
+        for (int i = 0; i < n; ++i) {
+            for (int k = 0; k <= i; ++k) {
+                dp[i][i][k] = (k + 1) * (k + 1);
+            }
+        }
+        
+        for (int l = 1; l < n; ++l) {
+            for (int j = l; j < n; ++j) {
+                int i = j - l;
+                for (int k = 0; k <= i; ++k) {
+                    int tmp = (k + 1) * (k + 1) + dp[i + 1][j][0];
+                    for (int m = i + 1; m <= j; ++m) {
+                        if (boxes[m] == boxes[i]) {
+                            tmp = Math.max(tmp, dp[i + 1][m - 1][0] + dp[m][j][k + 1]);
+                        }
+                    }
+                    dp[i][j][k] = tmp;
+                }
+            }
+        }
+        return dp[0][n - 1][0];
+    }
+    public int helper(int[] boxes, int[][][] dp, int i, int j, int k) {
+        if (j < i) return 0;
+        if (dp[i][j][k] > 0) return dp[i][j][k];
+        int ans = (k + 1) * (k + 1) + helper(boxes, dp, i + 1, j, 0);
+        for (int m = i + 1; m <= j; ++ m) {
+            if (boxes[m] == boxes[i]) {
+                ans = Math.max(ans, helper(boxes, dp, i + 1, m - 1, 0) + helper(boxes, dp, m, j, k + 1));
+            }
+        }
+        dp[i][j][k] = ans;
+        return ans;
+    }
+}
