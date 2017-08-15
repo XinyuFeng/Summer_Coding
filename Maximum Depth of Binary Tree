@@ -1,0 +1,31 @@
+public class Solution {
+    public int maxDepth(TreeNode root) {
+        //return dfs(root);
+        if (root == null) return 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int len = queue.size();
+            while(len -- > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                
+            }
+            count++;
+        }
+        return count;
+    }
+    
+    private int dfs(TreeNode root) {
+        if (root == null) return 0;
+        int l = dfs(root.left);
+        int r = dfs(root.right);
+        return Math.max(l, r) + 1;
+    }
+}
