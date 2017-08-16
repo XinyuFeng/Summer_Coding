@@ -1,0 +1,28 @@
+public class Solution {
+    private int depth(TreeNode root) {
+        int h = 0;
+        TreeNode tmp = root;
+        while (tmp != null) {
+            h++;
+            tmp = tmp.left;
+        }
+        return h;
+    } 
+    
+    public int countNodes(TreeNode root) {
+        int h = depth(root);
+        int ans = 0;
+        while (root != null) {
+            int rightH = depth(root.right);
+            ans += (1 << rightH);
+            if (rightH == h - 1) {
+                root = root.right;
+            }
+            else {
+                root = root.left;
+            }
+            h--;
+        }
+        return ans;
+    }
+}
