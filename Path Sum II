@@ -1,0 +1,35 @@
+public class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> tmp = new ArrayList<>();
+        Stack<TreeNode> s = new Stack<>();
+        int count = 0;
+        
+        if (root == null) return ans;
+        TreeNode cur = root, pre = null;
+        while (cur != null || !s.isEmpty()) {
+            while (cur != null) {
+                s.push(cur);
+                tmp.add(cur.val);
+                count += cur.val;
+                cur = cur.left;
+            }
+            
+            cur = s.peek();
+            if (cur.left == null && cur.right == null && count == sum) {
+                ans.add(new ArrayList<Integer>(tmp));
+            }
+            if (cur.right != null && pre != cur.right) {
+                cur = cur.right;
+            }
+            else {
+                pre = cur;
+                count -= cur.val;
+                tmp.remove(tmp.size() - 1);
+                s.pop();
+                cur = null;
+            }
+        }
+        return ans;
+    }
+}
