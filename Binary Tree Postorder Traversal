@@ -1,0 +1,53 @@
+class Solution {
+    private void reverse(TreeNode start, TreeNode end) {
+        TreeNode x = start;
+        TreeNode y = start.right;
+        TreeNode z;
+        while (x != end) {
+            z = y.right;
+            y.right = x;
+            x = y;
+            y = z;
+        }
+    }
+    
+    private void helper(TreeNode start, TreeNode end, List<Integer> ans) {
+        reverse(start, end);
+        TreeNode node = end;
+        while (true) {
+            ans.add(node.val);
+            if (node == start) break;
+            node = node.right;
+        }
+        reverse(end, start);
+    }
+    
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        TreeNode dump = new TreeNode(0);
+        dump.left = root;
+        TreeNode cur = dump;
+        while (cur != null) {
+            if (cur.left != null) {
+                TreeNode next = cur.left;
+                while (next.right != null && next.right != cur) {
+                    next = next.right;
+                }
+                if (next.right == null) {
+                    next.right = cur;
+                    cur = cur.left;
+                }
+                else {
+                    helper(cur.left, next, ans);
+                    next.right = null;
+                    cur = cur.right;
+                }
+            }
+            else {
+                cur = cur.right;
+            }
+        }
+        
+        return ans;
+    }
+}
