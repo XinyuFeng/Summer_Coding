@@ -1,0 +1,87 @@
+class Solution {
+    public List<Integer> closestKValues(TreeNode root, double target, int k) {
+        List<Integer> ans = new LinkedList<>();
+        Stack<TreeNode> succ = new Stack<>();
+        Stack<TreeNode> pred = new Stack<>();
+        initPreStack(root, target, pred);
+        initSucStack(root, target, succ);
+        if (!succ.isEmpty() && !pred.isEmpty() && succ.peek().val == pred.peek().val) {
+            getNextPre(pred);
+        }
+        
+        while (k-- > 0) {
+            if (succ.isEmpty()) {
+                ans.add(getNextPre(pred));
+            }
+            else if (pred.isEmpty()) {
+                ans.add(getNextSuc(succ));
+            }
+            else {
+                double succ_diff = Math.abs((double)succ.peek().val - target);
+                double pred_diff = Math.abs((double)pred.peek().val - target);
+                if (succ_diff < pred_diff) {
+                    ans.add(getNextSuc(succ));
+                }
+                else {
+                    ans.add(getNextPre(pred));
+                }
+            }
+            
+        }
+        return ans;
+    }
+    
+    private void initPreStack(TreeNode root, double target, Stack<TreeNode> pred) {
+        while (root != null) {
+            if (root.val == target) {
+                pred.push(root);
+                break;
+            }
+            else if (root.val < target) {
+                pred.push(root);
+                root = root.right;
+            }
+            else {
+                root = root.left;
+            }
+        }
+    }
+    
+    private void initSucStack(TreeNode root, double target, Stack<TreeNode> succ) {
+        while (root != null) {
+            if (root.val == target) {
+                succ.push(root);
+                break;
+            }
+            else if (root.val > target) {
+                succ.push(root);
+                root = root.left;
+            }
+            else {
+                root = root.right;
+            }
+        }
+    }
+    
+    private int getNextSuc(Stack<TreeNode> succ) {
+        TreeNode curr = succ.pop();
+        int ans = curr.val;
+        curr = curr.right;
+        while (curr != null) {
+            succ.push(curr);
+            curr = curr.left;
+        }
+        return ans;
+    }
+    
+    private int getNextPre(Stack<TreeNode> pred) {
+        TreeNode curr = pred.pop();
+        int ans = curr.val;
+        curr = curr.left;
+        while (curr != null) {
+            pred.push(curr);
+            curr = curr.right;
+        }
+        return ans;
+    }
+}
