@@ -1,0 +1,62 @@
+class Solution {
+    private int curVal = Integer.MIN_VALUE;
+    private int curCount = 0;
+    private int maxCount = 0;
+    private int modeCount = 0;
+    private int[] mode;
+    
+    public int[] findMode(TreeNode root) {
+        inorder(root);
+        mode = new int[modeCount];
+        curCount = 0;
+        modeCount = 0;
+        curVal = Integer.MIN_VALUE;
+        inorder(root);
+        return mode;
+    }
+    
+    private void handleVal(int val) {
+        if (val != curVal) {
+            curVal = val;
+            curCount = 0;
+        }
+        curCount++;
+        if (curCount > maxCount) {
+            maxCount = curCount;
+            modeCount = 1;
+        }
+        else if (curCount == maxCount) {
+            if (mode != null) {
+                mode[modeCount] = curVal;
+            }
+            modeCount++;
+            
+        }
+    }
+    
+    private void inorder(TreeNode root) {
+        if (root == null) return;
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.left != null) {
+                TreeNode next = cur.left;
+                while (next.right != null && next.right != cur) {
+                    next = next.right;
+                }
+                if (next.right == null) {
+                    next.right = cur;
+                    cur = cur.left;
+                }
+                else {
+                    next.right = null;
+                    handleVal(cur.val);
+                    cur = cur.right;
+                }
+            }
+            else {
+                handleVal(cur.val);
+                cur = cur.right;
+            }
+        }
+    }
+}
