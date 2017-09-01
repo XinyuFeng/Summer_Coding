@@ -1,0 +1,28 @@
+class Solution {
+    private int maxSize = 0;
+    public int largestBSTSubtree(TreeNode root) {
+        if (root == null) return 0;
+        helper(root);
+        return maxSize;
+    }
+    
+    private int[] helper(TreeNode root) {
+        int[] ans = new int[3];
+        if (root == null) return ans;
+        int[] l = helper(root.left);
+        int[] r = helper(root.right);
+        
+        if ((l[0] == 0 || l[0] > 0 && root.val > l[2]) && (r[0] == 0 || r[0] > 0 && root.val < r[1])) {
+            int size = 1 + l[0] + r[0];
+            ans[0] = size;
+            maxSize = Math.max(maxSize, size);
+            ans[1] = l[0] == 0 ? root.val : l[1];
+            ans[2] = r[0] == 0 ? root.val : r[2];
+        }
+        else {
+            ans[0] = -1;
+        }
+        
+        return ans;
+    }
+}
