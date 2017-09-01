@@ -1,0 +1,20 @@
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        if (root == null) return -1;
+        TreeNode cur = root;
+        int ans = cur.val;
+        while (cur != null) {
+            if (Math.abs((float)ans - target) > Math.abs((float)cur.val - target)) {
+                ans = cur.val;
+            }
+            if (cur.val > target) {
+                cur = cur.left;
+            }
+            else {
+                cur = cur.right;
+            }
+            
+        }
+        return ans;
+    }
+}
