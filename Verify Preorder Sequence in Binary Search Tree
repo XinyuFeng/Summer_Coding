@@ -1,0 +1,16 @@
+class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        int i = 0;
+        int low = Integer.MIN_VALUE;
+        
+        for (int p : preorder) {
+            if (p < low) return false;
+            while (i > 0 && p > preorder[i - 1]) {
+                low = preorder[--i];
+            }
+            preorder[i++] = p;
+        }
+        
+        return true;
+    }
+}
