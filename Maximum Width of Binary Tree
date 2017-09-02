@@ -1,0 +1,19 @@
+class Solution {
+    public int widthOfBinaryTree(TreeNode root) {
+        if (root == null) return 0;
+        List<Integer> left = new ArrayList<>();
+        int[] ans = new int[1];
+        dfs(root, 0, 1, left, ans);
+        return ans[0];
+    }
+    
+    private void dfs(TreeNode root, int level, int id, List<Integer> left, int[] ans) {
+        if (root == null) return;
+        if (left.size() == level) {
+            left.add(id);
+        }
+        ans[0] = Math.max(ans[0], id - left.get(level) + 1);
+        dfs(root.left, level + 1, id * 2, left, ans);
+        dfs(root.right, level + 1, id * 2 + 1, left, ans);
+    }
+}
