@@ -1,0 +1,32 @@
+class Solution {
+    public int pathSum(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int[] map = new int[49];
+        int[] ans = new int[2];
+        Arrays.fill(map, -1);
+        for (int num : nums) {
+            int key = num / 10;
+            int val = num % 10;
+            map[key] = val;
+        }
+        
+        dfs(nums[0] / 10, nums, map, ans);
+        return ans[0];
+    }
+    
+    private void dfs(int root, int[] nums, int[] map, int[] ans) {
+        if (map[root] == -1) return;
+        ans[1] += map[root];
+        int l = (root / 10 + 1) * 10 + (root % 10) * 2 - 1;
+        int r = (root / 10 + 1) * 10 + (root % 10) * 2;
+        if (l > 48 || r > 48 || map[l] == -1 && map[r] == -1) {
+            ans[0] += ans[1];
+            ans[1] -= map[root];
+            return;
+        }
+        dfs(l, nums, map, ans);
+        dfs(r, nums, map, ans);
+        ans[1] -= map[root];
+        
+    }
+}
