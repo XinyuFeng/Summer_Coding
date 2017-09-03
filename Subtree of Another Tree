@@ -1,0 +1,64 @@
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if (s == null  && t == null) return true;
+        String ss = serial(s);
+        String tt = serial(t);
+        return KMP(ss, tt);
+        
+    }
+    private String serial(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+    
+    private void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("#,");
+            return;
+        }
+        sb.append("" + root.val + ",");
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
+    
+    private boolean KMP(String s, String t) {
+        String[] arrs = s.split(",");
+        String[] arrt = t.split(",");
+        int len = arrt.length;
+        int[] next = new int[len];
+        buildNext(arrt, next);
+        int i = 0, j = 0;
+        while (i < arrs.length) {
+            if (j == len) return true;
+            if (arrs[i].equals(arrt[j])) {
+                i++;
+                j++;
+            }
+            else if (j == 0) {
+                i++;
+            }
+            else{
+                j = next[j - 1];
+            }
+            
+        }
+        if (j == len) return true;
+        return false;
+    }
+    
+    private void buildNext(String[] arrt, int[] next) {
+        int i = 1, k = 0;
+        while (i < arrt.length) {
+            if (arrt[i].equals(arrt[k])) {
+                next[i++] = ++k;
+            }
+            else if (k == 0) {
+                next[i++] = 0;
+            }
+            else {
+                k = next[k - 1];
+            }
+        }
+    }
+}
