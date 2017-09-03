@@ -1,0 +1,13 @@
+class Solution {
+    public int findSecondMinimumValue(TreeNode root) {
+        if (root == null) return -1;
+        int ans = minval(root, root.val);
+        return ans == Integer.MAX_VALUE? -1 : ans;
+    }
+    
+    private int minval(TreeNode root, int first) {
+        if (root == null) return Integer.MAX_VALUE;
+        if (root.val != first) return root.val;
+        return Math.min(minval(root.left, first), minval(root.right, first));
+    }
+}
