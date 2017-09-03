@@ -1,0 +1,19 @@
+class Solution {
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        Map<String, Integer> map = new HashMap<>();
+        List<TreeNode> ans = new ArrayList<>();
+        dfs(root, map, ans);
+        return ans;
+    }
+    
+    private String dfs(TreeNode root, Map<String, Integer> map, List<TreeNode> ans) {
+        if (root == null) return "#";
+        String key = "" + root.val + "," + dfs(root.left, map, ans) + "," + dfs(root.right, map, ans);
+        int count = map.getOrDefault(key, 0);
+        if ( count == 1) {
+            ans.add(root);
+        }
+        map.put(key, count + 1);
+        return key;
+    }
+}
