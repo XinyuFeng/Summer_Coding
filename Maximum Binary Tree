@@ -1,0 +1,20 @@
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        if (nums == null || nums.length == 0) return null;
+        int len = nums.length;
+        TreeNode[] stk = new TreeNode[len];
+        int top = 0;
+        for (int i = 0; i < len; ++i) {
+            TreeNode node = new TreeNode(nums[i]);
+            while (top > 0 && nums[i] > stk[top - 1].val) {
+                node.left = stk[top - 1];
+                top--;
+            }
+            if (top > 0) {
+                stk[top - 1].right = node;
+            }
+            stk[top++] = node;
+        }
+        return stk[0];
+    }
+}
