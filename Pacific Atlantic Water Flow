@@ -1,0 +1,42 @@
+class Solution {
+    public List<int[]> pacificAtlantic(int[][] matrix) {
+        List<int[]> ans = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return ans;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean[][] visitA = new boolean[m][n];
+        boolean[][] visitP = new boolean[m][n];
+        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (int i = 0; i < n; ++i) {
+            dfs(matrix, visitA, Integer.MIN_VALUE, 0, i, dirs);
+            dfs(matrix, visitP, Integer.MIN_VALUE, m - 1, i, dirs);
+        }
+        
+        for (int i = 0; i < m; ++i) {
+            dfs(matrix, visitA, Integer.MIN_VALUE, i, 0, dirs);
+            dfs(matrix, visitP, Integer.MIN_VALUE, i, n - 1, dirs);
+        }
+        
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (visitA[i][j] && visitP[i][j]) {
+                    ans.add(new int[] {i, j});
+                }
+            }
+        }
+        return ans;
+    }
+    
+    private void dfs(int[][] matrix, boolean[][] visit, int height, int i, int j, int[][] dirs) {
+        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length || visit[i][j] || height > matrix[i][j]) {
+            return;
+        }
+        visit[i][j] = true;
+        for (int[] dir : dirs) {
+            int x = i + dir[0];
+            int y = j + dir[1];
+            dfs(matrix, visit, matrix[i][j], x, y, dirs);
+        }
+        
+    }
+}
