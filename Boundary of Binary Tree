@@ -1,0 +1,47 @@
+class Solution {
+    /*
+    flag = 0 : root;
+           1 : leftbound;
+           2 : rightbound;
+           3 : other
+    */
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+        List<Integer> leftBound = new ArrayList<>();
+        List<Integer> rightBound = new ArrayList<>();
+        List<Integer> leaves = new ArrayList<>();
+        preorder(root, leftBound, rightBound, leaves, 0);
+        leftBound.addAll(leaves);
+        leftBound.addAll(rightBound);
+        return leftBound;
+    }
+    
+    private void preorder(TreeNode root, List<Integer> leftBound, List<Integer> rightBound, List<Integer> leaves, int flag) {
+        if (root == null) return;
+        if (flag == 0 || flag == 1) {
+            leftBound.add(root.val);
+        }
+        else if (flag == 2) {
+            rightBound.add(0, root.val);
+        }
+        else if (root.left == null && root.right == null) {
+            leaves.add(root.val);
+        }
+        
+        preorder(root.left, leftBound, rightBound, leaves, findLeftChildFlag(root, flag));
+        preorder(root.right, leftBound, rightBound, leaves, findRightChildFlag(root, flag));
+    }
+    
+    private int findLeftChildFlag(TreeNode root, int flag) {
+        if (root == null) return 3;
+        if (flag == 0 || flag == 1) return 1;
+        if (flag == 2 && root.right == null) return 2;
+        return 3;
+    }
+    
+    private int findRightChildFlag(TreeNode root, int flag) {
+        if (root == null) return 3;
+        if (flag == 0 || flag == 2) return 2;
+        if (flag == 1 && root.left == null) return 1;
+        return 3;
+    }
+}
