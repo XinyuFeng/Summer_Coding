@@ -1,0 +1,40 @@
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        ArrayList[] graph = new ArrayList[numCourses];
+        int[] inDegree = new int[numCourses];
+        buildG(graph, inDegree, prerequisites);
+        Queue<Integer> queue = new LinkedList<>();
+        int[] ans = new int[numCourses];
+        for (int i = 0; i < numCourses; ++i) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        int cnt = 0;
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            ans[cnt] = node;
+            cnt++;
+            if (graph[node] == null) continue;
+            for (int i = 0; i < graph[node].size(); ++i) {
+                int child = (int)graph[node].get(i);
+                inDegree[child]--;
+                if (inDegree[child] == 0) {
+                    queue.offer(child);
+                }
+            }
+        }
+        return cnt == numCourses? ans : new int[0];
+        
+    }
+    
+    private void buildG(ArrayList[] graph, int[] inDegree, int[][] prerequisites) {
+        for (int[] pair : prerequisites) {
+            if (graph[pair[1]] == null) {
+                graph[pair[1]] = new ArrayList<Integer>();
+            }
+            graph[pair[1]].add(pair[0]);
+            inDegree[pair[0]]++;
+        }
+    }
+}
