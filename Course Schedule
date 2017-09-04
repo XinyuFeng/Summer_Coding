@@ -1,0 +1,43 @@
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        if (numCourses == 0) return true;
+        boolean[][] graph = new boolean[numCourses][numCourses];
+        int[] inDegree = new int[numCourses];
+        buildG(prerequisites, graph);
+        CalcinD(prerequisites, inDegree);
+        Queue<Integer> queue = new LinkedList<>();
+        int count = 0;
+        
+        for (int i = 0; i < numCourses; ++i) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            count++;
+            for (int i = 0; i < numCourses; ++i) {
+                if (graph[node][i] == true) {
+                    inDegree[i]--;
+                    if (inDegree[i] == 0) {
+                        queue.offer(i);
+                    }
+                    graph[node][i] = false;
+                }
+            }
+        }
+        return count == numCourses;
+    }
+    private void buildG(int[][] prerequisites, boolean[][] graph) {
+        for (int[] pair : prerequisites) {
+            graph[pair[1]][pair[0]] = true;
+        }
+    }
+    
+    private void CalcinD(int[][] prerequisites, int[] inDegree) {
+        for (int[] pair : prerequisites) {
+            inDegree[pair[0]]++;
+        }
+    }
+}
