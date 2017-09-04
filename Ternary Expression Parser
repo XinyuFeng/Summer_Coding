@@ -1,0 +1,25 @@
+class Solution {
+    public String parseTernary(String expression) {
+        int len = expression.length();
+        char[] stk = new char[len];
+        int top = 0;
+        for (int i = len - 1; i >= 0; --i) {
+            if (top > 0 && stk[top - 1] == '?') {
+                top--;
+                char first = stk[--top];
+                top--;
+                char second = stk[--top];
+                if (expression.charAt(i) == 'T') {
+                    stk[top++] = first;
+                }
+                else {
+                    stk[top++] = second;
+                }
+            }
+            else {
+                stk[top++] = expression.charAt(i); 
+            }
+        }
+        return "" + stk[top-1];
+    }
+}
