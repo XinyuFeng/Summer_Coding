@@ -1,0 +1,22 @@
+class Solution {
+    public List<String> findItinerary(String[][] tickets) {
+        Map<String, PriorityQueue<String>> map = new HashMap<>();
+        for (String[] ticket : tickets) {
+            if (!map.containsKey(ticket[0])) {
+                map.put(ticket[0], new PriorityQueue<String>());
+            }
+            map.get(ticket[0]).add(ticket[1]);
+        }
+        List<String> ans = new LinkedList<>();
+        Stack<String> stack = new Stack<>();
+        stack.push("JFK");
+        while (!stack.isEmpty()) {
+            while (map.containsKey(stack.peek()) && !map.get(stack.peek()).isEmpty()) {
+                String to = map.get(stack.peek()).poll();
+                stack.push(to);
+            }
+            ans.add(0, stack.pop());
+        }
+        return ans;
+    }
+}
