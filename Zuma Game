@@ -1,0 +1,40 @@
+class Solution {
+    public int findMinStep(String board, String hand) {
+        if (board == null || hand == null) return -1;
+        int[] h = new int[26];
+        for (int i = 0; i < hand.length(); ++i) {
+            h[hand.charAt(i) - 'A']++;
+        }
+        int ans = dfs(board + "#", h);
+        return ans == 6 ? -1 : ans;
+    }
+    
+    private String clean(String board) {
+        for (int i = 0, j = 0; j < board.length(); ++j) {
+            if (board.charAt(j) == board.charAt(i)) continue;
+            if (j - i >= 3) {
+                return clean(board.substring(0, i) + board.substring(j));
+            }
+            i = j;
+        }
+        return board;
+    }
+    private int dfs(String board, int[] h) {
+        
+        String s = clean(board);
+        if (s.equals("#")) return 0;
+        int ans = 6;
+        for (int i = 0, j = 0; j < s.length(); ++j) {
+            if (s.charAt(j) == s.charAt(i)) continue;
+            int need = 3 - (j - i);
+            int idx = s.charAt(i) - 'A';
+            if (h[idx] >= need) {
+                h[idx] -= need;
+                ans = Math.min(ans, dfs(s.substring(0, i) + s.substring(j), h) + need);
+                h[idx] += need;
+            }
+            i = j;
+        }
+        return ans;
+    }
+}
