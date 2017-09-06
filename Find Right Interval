@@ -1,0 +1,36 @@
+class Solution {
+    public int[] findRightInterval(Interval[] intervals) {
+        int len = intervals.length;
+        int[] ans = new int[len];
+        
+        HashMap<Interval, Integer> map = new HashMap<>();
+        for (int i = 0; i < len; ++i) {
+            map.put(intervals[i], i);
+        }
+        Arrays.sort(intervals, (a, b)->(a.start - b.start));
+        
+        for (int i = 0; i < len; ++i) {
+            Interval potential = search(intervals, intervals[i].end, i, len - 1);
+            if (potential == null) {
+                ans[map.get(intervals[i])] = -1;
+            }
+            else {
+                ans[map.get(intervals[i])] = map.get(potential);
+            }
+        }
+        return ans;
+    }
+    
+    private Interval search(Interval[] intervals, int target, int l, int r) {
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (intervals[mid].start < target) {
+                l = mid + 1;
+            }
+            else {
+                r = mid;
+            }
+        }
+        return intervals[l].start < target ? null : intervals[l];
+    }
+}
