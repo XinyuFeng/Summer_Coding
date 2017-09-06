@@ -1,0 +1,39 @@
+class Solution {
+    public int minArea(char[][] image, int x, int y) {
+        int m = image.length, n = image[0].length;
+        //up bound
+        int left = searchC(image, 0, y, 0, m, true);
+        int right = searchC(image, y + 1, n, 0, m, false);
+        int up = searchR(image, 0, x, left, right, true);
+        int down = searchR(image, x + 1, m, left, right, false);
+        return (right - left) * (down - up);
+    }
+    
+    private int searchC(char[][] image, int i, int j, int top, int down, boolean check) {
+        while (i < j) {
+            int mid = i + (j - i) / 2;
+            int k = top;
+            while (k < down && image[k][mid] == '0') ++k;
+            if ((k < down) == check) {
+                j = mid;
+            }
+            else i = mid + 1;
+        }
+        return i;
+    }
+    
+        private int searchR(char[][] image, int i, int j, int left, int right, boolean check) {
+        while (i < j) {
+            int mid = i + (j - i) / 2;
+            int k = left;
+            while (k < right && image[mid][k] == '0') ++k;
+            if ((k < right) == check) {
+                j = mid;
+            }
+            else i = mid + 1;
+        }
+        return i;
+    }
+    
+    
+}
