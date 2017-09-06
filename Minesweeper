@@ -1,0 +1,51 @@
+class Solution {
+    public char[][] updateBoard(char[][] board, int[] click) {
+        if (board == null || board.length == 0) return board;
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+        return helper(board, click[0], click[1], dirs);
+    }
+    
+    private char[][] helper(char[][] board, int i, int j, int[][] dirs) {
+        if (board[i][j] == 'M') {
+            board[i][j] = 'X';
+            return board;
+        }
+        if (board[i][j] != 'E') return board;
+        
+        int num = hasM(board, i, j);
+        if (num > 0) {
+            board[i][j] = (char)(num + '0');
+            return board;
+        }
+        else {
+            board[i][j] = 'B';
+            for (int[] dir : dirs) {
+                int x = i + dir[0];
+                int y = j + dir[1];
+                if (isBound(board, x, y)) {
+                    helper(board, x, y, dirs);
+                }
+            }
+        }
+        return board;
+    }
+    
+    private boolean isBound(char[][] M, int x, int y) {
+        if(x >= 0 && y >= 0 && x < M.length && y < M[0].length) {
+            return true;
+        }
+        return false;
+    }
+    
+    private int hasM(char[][] board, int i, int j) {
+        int cnt = 0;
+        for (int r = i - 1; r <= i + 1; ++r) {
+            for (int c = j - 1; c <= j + 1; ++c) {
+                if (isBound(board, r, c) && (r != i || c != j) && board[r][c] == 'M') {
+                    cnt++;
+                } 
+            }
+        }
+        return cnt;
+    }
+}
