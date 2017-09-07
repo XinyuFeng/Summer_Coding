@@ -1,0 +1,32 @@
+class Solution {
+    int cnt = 0;
+    public int totalNQueens(int n) {
+        //boolean[][] tmp = new boolean[n][n];
+        //boolean[] flag = new boolean[5 * n - 2];
+        int col = 0;
+        int dia1 = 0;
+        int dia2 = 0;
+        solve(col, dia1, dia2, 0, n);
+        return cnt;
+    }
+    
+    private void solve(int col, int dia1, int dia2, int r, int n) {
+        if (r == n) {
+            cnt++;
+            return;
+        }
+        
+        for (int c = 0; c < n; ++c) {
+            if (((col & (1 << c)) == 0) && ((dia1 & (1 << (c + r))) == 0) && ((dia2 & (1 << (n - 1 + c - r))) == 0)) {
+                col ^= (1 << c);
+                dia1 ^= (1 << (c + r));
+                dia2 ^= (1 << (n - 1 + c - r));
+                solve(col, dia1, dia2, r + 1, n);
+                col ^= (1 << c);
+                dia1 ^= (1 << (c + r));
+                dia2 ^= (1 << (n - 1 + c - r));
+            }
+        }
+    }
+    
+}
