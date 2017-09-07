@@ -1,0 +1,49 @@
+class WordDictionary {
+
+    class Node {
+        public Node[] children = new Node[26];
+        public String word = "#";
+    }
+    /** Initialize your data structure here. */
+    private Node root;
+    public WordDictionary() {
+        root = new Node();
+    }
+    
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        Node cur = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (cur.children[idx] == null) {
+                cur.children[idx] = new Node();
+            }
+            cur = cur.children[idx];
+        }
+        cur.word = word;
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        return dfs(word, root, 0);
+    }
+    
+    private boolean dfs(String word, Node root, int l) {
+        if (l == word.length()) return !root.word.equals("#");
+        if (word.charAt(l) != '.' && root.children[word.charAt(l) - 'a'] != null) {
+            return dfs(word, root.children[word.charAt(l) - 'a'], l + 1);
+        }
+        if (word.charAt(l) == '.') {
+            for (int i = 0; i < 26; ++i) {
+                if (root.children[i] != null) {
+                    if (dfs(word, root.children[i], l + 1)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+}
+
