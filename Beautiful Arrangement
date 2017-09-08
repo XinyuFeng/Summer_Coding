@@ -1,0 +1,33 @@
+class Solution {
+    int cnt = 0;
+    public int countArrangement(int N) {
+        if (N <= 0) return 0;
+        int[] arr = new int[N + 1];
+        for (int i = 1; i <= N; ++i) {
+            arr[i] = i;
+        }
+        dfs(arr, N);
+        return cnt;
+    }
+    
+    private void dfs(int[] arr, int idx) {
+        if (idx == 0) {
+            cnt++;
+            return;
+        }
+        
+        for (int i = idx; i >= 1; --i) {
+            swap(arr, idx, i);
+            if (arr[idx] % idx == 0 || idx % arr[idx] == 0) {
+                dfs(arr, idx - 1);
+            }
+            swap(arr, idx, i);
+        }
+    }
+    
+    private void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
