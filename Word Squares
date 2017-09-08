@@ -1,0 +1,66 @@
+class Solution {
+    class Node {
+        Node[] child;
+        String word;
+        Node() {
+            this.child = new Node[26];
+            this.word = null;
+        }  
+    }
+    private void add(Node root, String word) {
+        Node cur = root;
+        for (char c : word.toCharArray()) {
+            if (cur.child[c - 'a'] == null) {
+                cur.child[c - 'a'] = new Node();
+            }
+            cur = cur.child[c - 'a'];
+        }
+        cur.word = word;
+    }
+    
+    public List<List<String>> wordSquares(String[] words) {
+        List<List<String>> ans = new ArrayList<>();
+        if (words == null || words.length == 0) return ans;
+        Node root = new Node();
+        int len = words[0].length();
+        for (String word : words) {
+            add(root, word);
+        }
+        Node[] rows = new Node[len];
+        for (int i = 0; i < len; ++i) {
+            rows[i] = root;
+        }
+        dfs(rows, 0, 0, len, ans);
+        return ans;
+    }
+    
+    private void dfs(Node[] rows, int row, int col, int n, List<List<String>> ans) {
+        if (row == n && col == n) {
+            List<String> tmp = new ArrayList<>();
+            for (int i = 0; i < n; ++i) {
+                tmp.add(new String(rows[i].word));
+            }
+            ans.add(tmp);
+            return;
+        }
+        
+        if (col < n) {
+            Node preRow = rows[row];
+            Node preCol = rows[col];
+            for (int i = 0; i < 26; ++i) {
+                if (rows[row].child[i] != null && rows[col].child[i] != null) {
+                    rows[row] = rows[row].child[i];
+                    if (col > row) {
+                        rows[col] = rows[col].child[i];
+                    }
+                    dfs(rows, row, col + 1, n, ans);
+                    rows[row] = preRow;
+                    rows[col] = preCol;
+                }
+            }
+        }
+        else {
+            dfs(rows, row + 1, row + 1, n, ans);
+        }
+    }
+}
