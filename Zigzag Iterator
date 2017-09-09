@@ -1,0 +1,24 @@
+public class ZigzagIterator {
+
+    LinkedList<Iterator> l;
+    public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
+
+        l = new LinkedList<>();
+        if (!v1.isEmpty()) l.add(v1.iterator());
+        if (!v2.isEmpty()) l.add(v2.iterator());
+    }
+
+    public int next() {
+        Iterator it = l.remove();
+        int ans = (Integer)it.next();
+        if (it.hasNext()) {
+            l.add(it);
+        }
+        return ans;
+    }
+
+    public boolean hasNext() {
+        return !l.isEmpty();
+    }
+}
+
