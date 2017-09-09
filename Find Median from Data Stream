@@ -1,0 +1,26 @@
+class MedianFinder {
+
+    private Queue<Long> small = new PriorityQueue<>();
+    private Queue<Long> large = new PriorityQueue<>();
+    /** initialize your data structure here. */
+    public MedianFinder() {
+
+    }
+    
+    public void addNum(int num) {
+        small.add(-(long)num);
+        large.add(-small.poll());
+        if (small.size() < large.size()) {
+            small.add(-large.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if (small.isEmpty()) return 0;
+        if (small.size() > large.size()) {
+            return -small.peek();
+        }
+        return (-small.peek() + large.peek()) * 0.5;
+    }
+}
+
