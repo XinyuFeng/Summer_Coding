@@ -1,0 +1,71 @@
+class FileSystem {
+
+    class File {
+        boolean isFile;
+        Map<String, File> map;
+        String content;
+        File() {
+            map = new HashMap<>();
+            content = "";
+        }
+    }
+    private File root;
+    public FileSystem() {
+        root = new File();
+    }
+    
+    public List<String> ls(String path) {
+        File f = root;
+        List<String> ans = new ArrayList<>();
+        if (!path.equals("/")) {
+            String[] arr = path.split("/");
+            for (int i = 1; i < arr.length; ++i) {
+                f = f.map.get(arr[i]);
+            }
+            if (f.isFile) {
+                ans.add(arr[arr.length - 1]);
+                return ans;
+            }
+        }
+        ans.addAll(f.map.keySet());
+        Collections.sort(ans);
+        return ans;
+        
+    }
+    
+    public void mkdir(String path) {
+        String[] arr = path.split("/");
+        File t = root;
+        for (int i = 1; i < arr.length; ++i) {
+            if (!t.map.containsKey(arr[i])) {
+                t.map.put(arr[i], new File());
+            }
+            t = t.map.get(arr[i]);
+        }
+    }
+    
+    public void addContentToFile(String filePath, String content) {
+        String[] arr = filePath.split("/");
+        File t = root;
+        for (int i = 1; i < arr.length - 1; ++i) {
+            t = t.map.get(arr[i]);
+        }
+        String fileName = arr[arr.length - 1];
+        if (!t.map.containsKey(fileName)) {
+            t.map.put(fileName, new File());
+        }
+        t = t.map.get(fileName);
+        t.isFile = true;
+        t.content += content;
+    }
+    
+    public String readContentFromFile(String filePath) {
+        String[] arr = filePath.split("/");
+        File t = root;
+        for (int i = 1; i < arr.length; ++i) {
+            t = t.map.get(arr[i]);
+        }
+        return t.content;
+    }
+}
+
