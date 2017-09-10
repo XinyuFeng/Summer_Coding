@@ -1,0 +1,38 @@
+class Solution {
+    public int evalRPN(String[] tokens) {
+        if (tokens == null || tokens.length == 0) return 0;
+        int len = tokens.length, ans = 0, top = 0;
+        int[] stack = new int[len];
+        for (String token : tokens) {
+            if (isOp(token)) {
+                int res = calc(stack[top - 2], stack[top - 1], token);
+                top -= 2;
+                stack[top++] = res;
+            }
+            else {
+                stack[top++] = Integer.valueOf(token);
+            }
+        }
+        return stack[0];
+    }
+    
+    private boolean isOp(String token) {
+        return (token.equals("*") || token.equals("/") || token.equals("+") || token.equals("-"));
+    }
+    
+    private int calc(int num1, int num2, String token) {
+        if (token.equals("+")) {
+            return num1 + num2;
+        }
+        if (token.equals("-")) {
+            return num1 - num2;
+        }
+        if (token.equals("*")) {
+            return num1 * num2;
+        }
+        if (token.equals("/")) {
+            return num1 / num2;
+        }
+        return 0;
+    }
+}
