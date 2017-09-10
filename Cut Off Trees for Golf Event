@@ -1,0 +1,60 @@
+class Solution {
+    public int cutOffTree(List<List<Integer>> forest) {
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        if (forest == null || forest.size() == 0) return -1;
+        int m = forest.size(), n = forest.get(0).size();
+        List<int[]> trees = new ArrayList<>();
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int check = forest.get(i).get(j);
+                if (check > 1) {
+                    trees.add(new int[]{check, i, j});
+                }
+            }
+        }
+        Collections.sort(trees, new Comparator<int[]>(){
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0];
+            }
+        });
+        int ans = 0;
+        int s = 0, e = 0;
+        for (int i = 0; i < trees.size(); ++i) {
+            int step = bfs(forest, trees, dirs, s, e, trees.get(i), m, n);
+            if (step == -1) return -1;
+            ans += step;
+            s = trees.get(i)[1];
+            e = trees.get(i)[2];
+        }
+        return ans;
+        
+    }
+    
+    private int bfs(List<List<Integer>> forest, List<int[]> trees, int[][] dirs, int s, int e, int[] dest, int m, int n) {
+        if (s == dest[1] && e == dest[2]) return 0;
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[m][n];
+       // visited[s][e] = true;
+        queue.add(new int[]{s, e});
+        int ans = 0;
+        while (!queue.isEmpty()) {
+            int len = queue.size();
+            ans++;
+            while (len-- > 0) {
+                int[] node = queue.poll();
+                if (visited[node[0]][node[1]]) continue;
+                visited[node[0]][node[1]] = true;
+                for (int[] dir : dirs) {
+                    int x = node[0] + dir[0];
+                    int y = node[1] + dir[1];
+                    if (x == dest[1] && y == dest[2]) return ans;
+                    if (x >= 0 && x < m && y >= 0 && y < n && !visited[x][y] && forest.get(x).get(y) > 0) {
+                        queue.add(new int[]{x, y});
+                        //visited[x][y] = true;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+}
