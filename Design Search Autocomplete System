@@ -1,0 +1,90 @@
+class AutocompleteSystem {
+    class Node {
+        int cnt;
+        String str;
+        Node(int count, String s) {
+            this.cnt = count;
+            this.str = s;
+        }
+    }
+    class Trie {
+        Trie[] child = new Trie[27];
+        int times;
+    }
+
+    private Trie root;
+    private String cur = "";
+    private Trie curNode;
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        root = new Trie();
+        for (int i = 0; i < times.length; ++i) {
+            insert(root, sentences[i], times[i]);
+        }
+        curNode = root;
+        
+    }
+    
+    public List<String> input(char c) {
+        if (c == '#') {
+            insert(root, cur, 1);
+            cur = "";
+            curNode = root;
+            return new ArrayList<String>();
+        }
+        cur += c;
+        
+        int idx = getIdx(c);
+        if (curNode == null || curNode.child[idx] == null){
+            curNode = null;
+            return new ArrayList<String>();
+        }
+        curNode = curNode.child[idx];
+        
+        List<Node> cand = lookup(root, cur);
+        Collections.sort(cand, (a, b) -> a.cnt == b.cnt ? a.str.compareTo(b.str) : b.cnt - a.cnt);
+        List<String> ans = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, cand.size()); ++i) {
+            ans.add(cand.get(i).str);
+        }
+        return ans;
+    }
+    
+    private int getIdx(char c) {
+        if (c == ' ') return 26;
+        return c - 'a';
+    }
+    
+    private void insert(Trie root, String s, int count) {
+        Trie cur = root;
+        for (int i = 0; i < s.length(); ++i) {
+            int idx = getIdx(s.charAt(i));
+            if (cur.child[idx] == null) {
+                cur.child[idx] = new Trie();
+            }
+            cur = cur.child[idx];
+        }
+        cur.times += count;
+    }
+    
+    private List<Node> lookup(Trie root, String prefix) {
+        List<Node> ans = new ArrayList<>();
+        dfs(curNode, ans, prefix);
+        return ans;
+    }
+    
+    private void dfs(Trie cur, List<Node> ans, String prefix) {
+        if (cur.times > 0) {
+            ans.add(new Node(cur.times, prefix));
+        }
+        
+        for (char i = 'a'; i <= 'z'; ++i) {
+            int idx = getIdx(i);
+            if (cur.child[idx] != null) {
+                dfs(cur.child[idx], ans, prefix + i);
+            }
+        }
+        
+        if (cur.child[26] != null) {
+            dfs(cur.child[26], ans, prefix + ' ');
+        }
+    }
