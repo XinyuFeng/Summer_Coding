@@ -1,0 +1,109 @@
+class AllOne {
+
+    class Row {
+        int count = 0;
+        LinkedHashSet<String> keys = new LinkedHashSet<>();
+        Row up;
+        Row down;
+        Row(){};
+        public String getFirst(){return keys.iterator().next();}
+        
+    }
+    
+    Row head;
+    Row tail;
+    Map<String, Integer> dicts;
+    Map<Integer, Row> rows;
+    
+    
+    /** Initialize your data structure here. */
+    public AllOne() {
+        dicts = new HashMap<>();
+        rows = new HashMap<>();
+        
+        head = new Row();
+        head.keys.add("");
+        head.count = 0;
+        tail = new Row();
+        tail.keys.add("");
+        tail.count = Integer.MAX_VALUE;
+        head.down = tail;
+        tail.up = head;
+        
+        rows.put(0, head);
+        
+    }
+    
+    private void addKey(int cnt, String key, int offset) {
+        int nCnt = cnt + offset;
+        Row oldRow = rows.get(cnt);
+        if (!rows.containsKey(nCnt)) {
+            Row row = new Row();
+            rows.put(nCnt, row);
+            if (offset > 0) {
+                row.up = oldRow;
+                row.down = oldRow.down;
+                oldRow.down.up = row;
+                oldRow.down = row;
+            }
+            else {
+                row.up = oldRow.up;
+                row.down = oldRow;
+                oldRow.up.down = row;
+                oldRow.up = row;
+            }
+        }
+        Row row = rows.get(nCnt);
+        row.keys.add(key);
+        
+        
+    }
+    
+    private void removeKey(int cnt, String key) {
+        Row row = rows.get(cnt);
+        row.keys.remove(key);
+        if (row.keys.isEmpty()) {
+            row.up.down = row.down;
+            row.down.up = row.up;
+            row.up = null;
+            row.down = null;
+            rows.remove(cnt);
+        }
+    }
+    
+    /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+    public void inc(String key) {
+        if (dicts.containsKey(key)) {
+            int cnt = dicts.get(key);
+            addKey(cnt, key, 1);
+            removeKey(cnt, key);
+            dicts.put(key, cnt + 1);
+        }
+        else {
+            dicts.put(key, 1);
+            addKey(0, key, 1);
+        }
+    }
+    
+    /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+    public void dec(String key) {
+        if (!dicts.containsKey(key)) return;
+        int cnt = dicts.get(key);
+        addKey(cnt, key, -1);
+        removeKey(cnt, key);
+        dicts.put(key, cnt - 1);
+        if (cnt == 1) {
+            dicts.remove(key);
+        }
+    }
+    
+    /** Returns one of the keys with maximal value. */
+    public String getMaxKey() {
+        return tail.up.getFirst();
+    }
+    
+    /** Returns one of the keys with Minimal value. */
+    public String getMinKey() {
+        return head.down.getFirst();
+    }
+}
