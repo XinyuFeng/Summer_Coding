@@ -1,0 +1,16 @@
+class Solution {
+    int idx = 0;
+    public boolean isValidSerialization(String preorder) {
+        String[] arr = preorder.split(",");
+        dfs(arr);
+        return idx == arr.length - 1;
+    }
+    
+    private void dfs(String[] arr) {
+        if (idx >= arr.length || arr[idx].equals("#")) return;
+        idx++;
+        dfs(arr);
+        idx++;
+        dfs(arr);
+    }
+}
