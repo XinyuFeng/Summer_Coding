@@ -1,0 +1,19 @@
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int len1 = nums1.length, len2 = nums2.length, top = 0;
+        int[] stk = new int[len2];
+        int[] ans = new int[len1];
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = len2 - 1; i >= 0; --i) {
+            while (top > 0 && stk[top - 1] < nums2[i]) {
+                top--;
+            }
+            map.put(nums2[i], top == 0 ? -1 : stk[top - 1]);
+            stk[top++] = nums2[i];
+        }
+        for (int i = 0; i < len1; ++i) {
+            ans[i] = map.get(nums1[i]);
+        }
+        return ans;
+    }
+}
