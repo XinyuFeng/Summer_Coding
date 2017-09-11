@@ -1,0 +1,29 @@
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+        if (n == 0 || logs.size() == 0) return new int[0];
+        int len = logs.size(), topId = 0, topVal = 0;
+        int[] stkId = new int[len];
+        int[] ans = new int[n];
+        int lastTime = 0;
+        
+        for (int i = 0; i < len; ++i) {
+            String[] arr = logs.get(i).split(":");
+            int id = Integer.valueOf(arr[0]);
+            int val = Integer.valueOf(arr[2]);
+            if (topId == 0 || arr[1].equals("start")) {
+                if (topId > 0) {
+                   ans[stkId[topId - 1]] += val - lastTime; 
+                }
+                stkId[topId++] = id;
+                lastTime = val;
+            }
+            else {
+                ans[id] += val - lastTime + 1;
+                topId--;
+                lastTime = val + 1;
+            }
+
+        }
+        return ans;
+    }
+}
