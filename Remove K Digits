@@ -1,0 +1,23 @@
+class Solution {
+    public String removeKdigits(String num, int k) {
+        char[] arr = num.toCharArray();
+        int len = arr.length, top = 0;
+        char[] stack = new char[len];
+        int digits = len - k;
+        for (int i = 0; i < len; ++i) {
+            char c = arr[i];
+            while (top > 0 && c < stack[top - 1] && k > 0) {
+                top--;
+                k--;
+            }
+            stack[top++] = c;
+        }
+        //while (k-- > 0 && top > 0) top--; 
+        int i = 0;
+        for (i = 0; i < top && i < digits; ++i) {
+            if (stack[i] != '0') break;
+        }
+
+        return i == digits? "0" : new String(stack, i, digits - i);
+    }
+}
