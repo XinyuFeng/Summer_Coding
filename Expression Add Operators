@@ -1,0 +1,40 @@
+class Solution {
+    public List<String> addOperators(String num, int target) {
+        List<String> ans = new ArrayList<>();
+        if (num == null || num.length() == 0) return ans;
+        char[] path = new char[2 * num.length() - 1];
+        dfs(ans, path, 0, 0, num, target, 0, 0);
+        return ans;
+    }
+    
+    private void dfs(List<String> ans, char[] path, int idx, int pathIdx, String num, int target, long eval, long pre) {
+        if (idx == num.length() && eval == target) {
+            ans.add(new String(path, 0, pathIdx));
+            return;
+        } 
+        
+        int tmpIdx = pathIdx;
+        long n = 0;
+        for (int i = idx; i < num.length(); ++i) {
+            if (i != idx && num.charAt(idx) == '0') break;
+            n = 10 * n + num.charAt(i) - '0';
+            //long tmp = Long.parseLong(num.substring(idx, i + 1));
+            if (idx == 0) {
+                path[pathIdx++] = num.charAt(i);
+                dfs(ans, path, i + 1, pathIdx, num, target, n, n);
+            }
+            else {
+                path[++pathIdx] = num.charAt(i);
+                path[tmpIdx] = '+';
+                dfs(ans, path, i + 1, pathIdx + 1, num, target, eval + n, n);
+                path[tmpIdx] = '-';
+                dfs(ans, path, i + 1, pathIdx + 1, num, target, eval - n, -n);
+                path[tmpIdx] = '*';
+                dfs(ans, path, i + 1, pathIdx + 1, num, target, eval - pre + pre * n, pre * n);
+                
+            }
+        }
+    }
+    
+    
+}
