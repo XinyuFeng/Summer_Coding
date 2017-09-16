@@ -1,0 +1,57 @@
+class Solution {
+    public String alienOrder(String[] words) {
+        HashSet<Character>[] graph = new HashSet[26];
+        int[] indegree = new int[26];
+        Arrays.fill(indegree, -1);
+        int cnt = 0;
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                if (indegree[c - 'a'] == -1) {
+                    cnt++;
+                }
+                indegree[c - 'a'] = 0;
+            }
+        }
+        
+        for (int i = 0; i < words.length - 1; ++i) {
+            int len = Math.min(words[i].length(), words[i + 1].length());
+            for (int j = 0; j < len; ++j) {
+                char a = words[i].charAt(j);
+                char b = words[i + 1].charAt(j);
+                if (a != b) {
+                    if (graph[a - 'a'] == null) {
+                        graph[a - 'a'] = new HashSet<Character>();
+                    }
+                    if (!graph[a - 'a'].contains(b)) {
+                        graph[a - 'a'].add(b);
+                        indegree[b - 'a']++;
+                    }
+                    
+                    break;
+                }
+            }
+        }
+        
+        Queue<Character> queue = new LinkedList<>();
+        for (int i = 0; i < 26; ++i) {
+            if (indegree[i] == 0) {
+                queue.add((char)(i + 'a'));
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char node = queue.poll();
+            sb.append(node);
+            if (graph[node - 'a'] == null) continue;
+            for (char c : graph[node - 'a']) {
+                indegree[c - 'a']--;
+                if (indegree[c - 'a'] == 0) {
+                    queue.add(c);
+                }
+            }
+        }
+        String ans = sb.toString();
+        return ans.length() == cnt ? sb.toString() : "";
+    }
+}
